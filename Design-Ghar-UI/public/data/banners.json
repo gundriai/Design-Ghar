@@ -1,0 +1,29 @@
+[
+  {
+    "id": "1",
+    "title": "Mother's Day Special - 50% OFF",
+    "image": "https://images.pexels.com/photos/6707628/pexels-photo-6707628.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "link": "/offers/mothers-day",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-12",
+    "priority": 1
+  },
+  {
+    "id": "2",
+    "title": "New Year T-shirt Sale - 30% OFF",
+    "image": "https://images.pexels.com/photos/5709639/pexels-photo-5709639.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "link": "/offers/new-year",
+    "startDate": "2025-01-01",
+    "endDate": "2025-01-15",
+    "priority": 2
+  },
+  {
+    "id": "3",
+    "title": "Canvas Print BOGO",
+    "image": "https://images.pexels.com/photos/1145720/pexels-photo-1145720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "link": "/offers/canvas-bogo",
+    "startDate": "2025-06-01",
+    "endDate": "2025-06-30",
+    "priority": 3
+  }
+]

@@ -1,0 +1,90 @@
+[
+  {
+    "id": "1",
+    "title": "Cotton T-Shirt",
+    "type": "tshirt",
+    "description": "Premium cotton t-shirt with custom print. Available in multiple sizes and colors.",
+    "price": 250,
+    "discountedPrice": 200,
+    "discount": 20,
+    "featured": true,
+    "image": "https://images.pexels.com/photos/428340/pexels-photo-428340.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "2",
+    "title": "Polo T-Shirt",
+    "type": "tshirt",
+    "description": "Elegant polo t-shirt perfect for casual and semi-formal occasions.",
+    "price": 350,
+    "discountedPrice": 280,
+    "discount": 20,
+    "featured": true,
+    "image": "https://images.pexels.com/photos/1456706/pexels-photo-1456706.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "3",
+    "title": "Corporate ID Card",
+    "type": "idcard",
+    "description": "Professional ID cards with your company logo and employee details.",
+    "price": 150,
+    "discountedPrice": 120,
+    "discount": 20,
+    "featured": true,
+    "image": "https://images.pexels.com/photos/8111311/pexels-photo-8111311.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "4",
+    "title": "Event ID Card",
+    "type": "idcard",
+    "description": "Custom ID cards for events, conferences, and exhibitions.",
+    "price": 120,
+    "discountedPrice": 100,
+    "discount": 16,
+    "featured": false,
+    "image": "https://images.pexels.com/photos/8111311/pexels-photo-8111311.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "5",
+    "title": "Photo Canvas Print",
+    "type": "canvas",
+    "description": "Transform your favorite photos into stunning canvas wall art.",
+    "price": 500,
+    "discountedPrice": 400,
+    "discount": 20,
+    "featured": true,
+    "image": "https://images.pexels.com/photos/1145720/pexels-photo-1145720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "6",
+    "title": "Custom Lanyard",
+    "type": "lanyard",
+    "description": "Personalized lanyards with your organization's branding.",
+    "price": 80,
+    "discountedPrice": 60,
+    "discount": 25,
+    "featured": true,
+    "image": "https://images.pexels.com/photos/6476251/pexels-photo-6476251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "7",
+    "title": "Custom Keyring",
+    "type": "lanyard",
+    "description": "Branded keyrings perfect for promotions and giveaways.",
+    "price": 50,
+    "discountedPrice": 40,
+    "discount": 20,
+    "featured": false,
+    "image": "https://images.pexels.com/photos/5740841/pexels-photo-5740841.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  },
+  {
+    "id": "8",
+    "title": "Designer T-Shirt",
+    "type": "tshirt",
+    "description": "Premium designer t-shirt with unique artwork.",
+    "price": 400,
+    "discountedPrice": 320,
+    "discount": 20,
+    "featured": true,
+    "image": "https://images.pexels.com/photos/4066293/pexels-photo-4066293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  }
+]

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "1",
+    "name": "Mother's Day Special",
+    "discountType": "percentage",
+    "discountValue": 50,
+    "appliesTo": "category",
+    "category": "tshirt",
+    "startDate": "2025-05-01",
+    "endDate": "2025-05-12"
+  },
+  {
+    "id": "2",
+    "name": "New Year Sale",
+    "discountType": "percentage",
+    "discountValue": 30,
+    "appliesTo": "all",
+    "startDate": "2025-01-01",
+    "endDate": "2025-01-15"
+  },
+  {
+    "id": "3",
+    "name": "Canvas BOGO",
+    "discountType": "percentage",
+    "discountValue": 100,
+    "appliesTo": "category",
+    "category": "canvas",
+    "startDate": "2025-06-01",
+    "endDate": "2025-06-30"
+  }
+]

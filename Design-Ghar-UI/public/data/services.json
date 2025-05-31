@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "T-Shirt Print & Design",
+    "description": "High-quality custom designs on premium fabric",
+    "icon": "/images/services/tshirt.svg"
+  },
+  {
+    "id": "2",
+    "name": "ID Card Design",
+    "description": "Professional ID cards for organizations and events",
+    "icon": "/images/services/idcard.svg"
+  },
+  {
+    "id": "3",
+    "name": "Canvas Printing",
+    "description": "Turn your photos into beautiful canvas wall art",
+    "icon": "/images/services/canvas.svg"
+  },
+  {
+    "id": "4",
+    "name": "Lanyard & Keyring",
+    "description": "Custom branded accessories for your organization",
+    "icon": "/images/services/lanyard.svg"
+  }
+]

@@ -1,0 +1,57 @@
+# === Node Modules ===
+node_modules/
+**/node_modules/
+
+# === Build Output ===
+dist/
+**/dist/
+build/
+**/build/
+dist-ssr/
+coverage/
+.nyc_output/
+.temp/
+.tmp/
+
+# === Logs ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === Runtime Data ===
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# === Environment Files ===
+.env
+.env.local
+.env.*.local
+
+# === Editor/IDE Directories ===
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# === Diagnostic Reports ===
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
