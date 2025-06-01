@@ -61,28 +61,6 @@ export default function Header() {
 						))}
 					</nav>
 
-					{/* Auth Buttons */}
-					<div className="hidden lg:flex items-center space-x-4">
-						{user ? (
-							<div className="flex items-center space-x-4">
-								<Link to="/admin">
-									<Button variant="outline" className="text-sm">
-										Admin Dashboard
-									</Button>
-								</Link>
-								<Button onClick={logout} variant="ghost" className="text-sm">
-									Logout
-								</Button>
-							</div>
-						) : (
-							<Link to="/login">
-								<Button className="bg-sky-500 hover:bg-sky-600 text-white">
-									Login
-								</Button>
-							</Link>
-						)}
-					</div>
-
 					{/* Mobile Menu Button */}
 					<div className="lg:hidden">
 						<Button
