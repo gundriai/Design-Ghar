@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Service } from '@/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+import { CardHoverEffect } from '@/components/ui/CardHoverEffect';
 
 interface ServiceCardProps {
   service: Service;
@@ -10,11 +10,8 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ service }: ServiceCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      <Card className="h-full bg-white hover:shadow-xl transition-shadow overflow-hidden">
+    <CardHoverEffect>
+      <Card className="h-full bg-white border border-gray-200 shadow-md transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] group-hover:shadow-xl group-hover:scale-[1.04] group-hover:border-primary/80 group-hover:bg-[linear-gradient(135deg,_rgba(0,174,239,0.15)_0%,_#fff_80%)]">
         <CardHeader className="text-center pb-2">
           <div className="mx-auto w-24 h-24 mb-4">
             <img 
@@ -23,7 +20,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
               className="w-full h-full object-contain"
             />
           </div>
-          <CardTitle className="text-xl font-semibold text-indigo-900">
+          <CardTitle className="text-xl font-semibold text-primary">
             {service.name}
           </CardTitle>
         </CardHeader>
@@ -38,13 +35,13 @@ export default function ServiceCard({ service }: ServiceCardProps) {
           <Link to={`/product/${service.id}`}>
             <Button 
               variant="outline" 
-              className="border-indigo-600 text-indigo-600 hover:bg-indigo-50"
+              className="border-primary text-primary hover:bg-primary/10"
             >
               See More
             </Button>
           </Link>
         </CardFooter>
       </Card>
-    </motion.div>
+    </CardHoverEffect>
   );
 }
