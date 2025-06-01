@@ -35,7 +35,8 @@ export default function Header() {
 				className={cn(
 					'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12 lg:px-24',
 					'bg-gradient-to-b from-[#00AEEF] via-[#00AEEF]/20 to-[#FFFFFF]',
-					isScrolled ? 'py-2' : 'py-4'
+					isScrolled ? 'py-2' : 'py-4',
+					(isOpen || isScrolled) ? 'backdrop-blur-md bg-opacity-90' : ''
 				)}
 				style={{ boxShadow: 'none', border: 'none' }}
 			>
@@ -128,8 +129,20 @@ export default function Header() {
 					</div>
 				)}
 			</header>
-			{/* Spacer to push content below fixed header */}
 			<div className={isScrolled ? 'h-16' : 'h-20'} />
+			{(isOpen || isScrolled) && (
+				<div
+					className="fixed left-0 top-0 w-full"
+					style={{
+						height: isScrolled ? '4rem' : '5rem',
+						zIndex: 40,
+						backdropFilter: 'blur(8px)',
+						WebkitBackdropFilter: 'blur(8px)',
+						background: 'rgba(0,0,0,0.07)',
+						pointerEvents: 'none',
+					}}
+				/>
+			)}
 		</>
 	);
 }
