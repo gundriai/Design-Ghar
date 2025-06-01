@@ -6,146 +6,149 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
 const navItems = [
-  { label: 'Home', path: '/' },
-  { label: 'Products', path: '/products' },
-  { label: 'Delivery', path: '/delivery' },
-  { label: 'About', path: '/about' },
-  { label: 'Location', path: '/location' },
-  { label: 'Contact', path: '/contact' },
+	{ label: 'Home', path: '/' },
+	{ label: 'Products', path: '/products' },
+	{ label: 'Delivery', path: '/delivery' },
+	{ label: 'About', path: '/about' },
+	{ label: 'Location', path: '/location' },
+	{ label: 'Contact', path: '/contact' },
 ];
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const { user, logout } = useAuth();
+	const [isOpen, setIsOpen] = useState(false);
+	const [isScrolled, setIsScrolled] = useState(false);
+	const { user, logout } = useAuth();
 
-  // Handle scroll event to change header style
-  useState(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
+	// Handle scroll event to change header style
+	useState(() => {
+		const handleScroll = () => {
+			setIsScrolled(window.scrollY > 20);
+		};
 
-  return (
-    <header 
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12 lg:px-24",
-        isScrolled ? "bg-white shadow-md py-2" : "bg-sky-50 py-4"
-      )}
-    >
-      <div className="flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <img src="/logo.png" alt="DesignGhar" className="h-12" />
-        </Link>
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	});
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-8">
-          {navItems.map((item) => (
-            <Link 
-              key={item.path} 
-              to={item.path}
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-sky-600",
-                isScrolled ? "text-gray-800" : "text-gray-800"
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+	return (
+		<header
+			className={cn(
+				'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12 lg:px-24',
+				// Remove shadow and border, add gradient
+				'bg-gradient-to-b from-[#00AEEF] via-[#00AEEF]/20 to-[#FFFFFF]',
+				isScrolled ? 'py-2' : 'py-4'
+			)}
+			style={{ boxShadow: 'none', border: 'none' }}
+		>
+			<div className="flex items-center justify-between">
+				{/* Logo */}
+				<Link to="/" className="flex items-center">
+					<img src="/logo.png" alt="DesignGhar" className="h-12" />
+				</Link>
 
-        {/* Auth Buttons */}
-        <div className="hidden lg:flex items-center space-x-4">
-          {user ? (
-            <div className="flex items-center space-x-4">
-              <Link to="/admin">
-                <Button variant="outline\" className="text-sm">
-                  Admin Dashboard
-                </Button>
-              </Link>
-              <Button onClick={logout} variant="ghost" className="text-sm">
-                Logout
-              </Button>
-            </div>
-          ) : (
-            <Link to="/login">
-              <Button className="bg-sky-500 hover:bg-sky-600 text-white">
-                Login
-              </Button>
-            </Link>
-          )}
-        </div>
+				{/* Desktop Navigation */}
+				<nav className="hidden lg:flex items-center space-x-8">
+					{navItems.map((item) => (
+						<Link
+							key={item.path}
+							to={item.path}
+							className={cn(
+								'text-sm font-medium transition-colors hover:text-sky-600',
+								isScrolled ? 'text-gray-800' : 'text-gray-800'
+							)}
+						>
+							{item.label}
+						</Link>
+					))}
+				</nav>
 
-        {/* Mobile Menu Button */}
-        <div className="lg:hidden">
-          <Button 
-            variant="ghost" 
-            size="icon"
-            onClick={() => setIsOpen(!isOpen)}
-            className={cn(
-              "text-gray-800",
-              isScrolled ? "hover:bg-gray-100" : "hover:bg-white/20"
-            )}
-          >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
-        </div>
-      </div>
+				{/* Auth Buttons */}
+				<div className="hidden lg:flex items-center space-x-4">
+					{user ? (
+						<div className="flex items-center space-x-4">
+							<Link to="/admin">
+								<Button variant="outline" className="text-sm">
+									Admin Dashboard
+								</Button>
+							</Link>
+							<Button onClick={logout} variant="ghost" className="text-sm">
+								Logout
+							</Button>
+						</div>
+					) : (
+						<Link to="/login">
+							<Button className="bg-sky-500 hover:bg-sky-600 text-white">
+								Login
+							</Button>
+						</Link>
+					)}
+				</div>
 
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 px-6 space-y-4">
-          {navItems.map((item) => (
-            <Link 
-              key={item.path} 
-              to={item.path}
-              className="block py-2 text-gray-800 hover:text-sky-600"
-              onClick={() => setIsOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <div className="pt-2 border-t border-gray-100">
-            {user ? (
-              <div className="flex flex-col space-y-2">
-                <Link 
-                  to="/admin" 
-                  className="py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Button variant="outline" className="w-full">
-                    Admin Dashboard
-                  </Button>
-                </Link>
-                <Button 
-                  onClick={() => {
-                    logout();
-                    setIsOpen(false);
-                  }} 
-                  variant="ghost" 
-                  className="w-full"
-                >
-                  Logout
-                </Button>
-              </div>
-            ) : (
-              <Link 
-                to="/login" 
-                className="py-2 block"
-                onClick={() => setIsOpen(false)}
-              >
-                <Button className="w-full bg-sky-500 hover:bg-sky-600 text-white">
-                  Login
-                </Button>
-              </Link>
-            )}
-          </div>
-        </div>
-      )}
-    </header>
-  );
+				{/* Mobile Menu Button */}
+				<div className="lg:hidden">
+					<Button
+						variant="ghost"
+						size="icon"
+						onClick={() => setIsOpen(!isOpen)}
+						className={cn(
+							'text-gray-800',
+							isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/20'
+						)}
+					>
+						{isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+					</Button>
+				</div>
+			</div>
+
+			{/* Mobile Navigation */}
+			{isOpen && (
+				<div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 px-6 space-y-4">
+					{navItems.map((item) => (
+						<Link
+							key={item.path}
+							to={item.path}
+							className="block py-2 text-gray-800 hover:text-sky-600"
+							onClick={() => setIsOpen(false)}
+						>
+							{item.label}
+						</Link>
+					))}
+					<div className="pt-2 border-t border-gray-100">
+						{user ? (
+							<div className="flex flex-col space-y-2">
+								<Link
+									to="/admin"
+									className="py-2"
+									onClick={() => setIsOpen(false)}
+								>
+									<Button variant="outline" className="w-full">
+										Admin Dashboard
+									</Button>
+								</Link>
+								<Button
+									onClick={() => {
+										logout();
+										setIsOpen(false);
+									}}
+									variant="ghost"
+									className="w-full"
+								>
+									Logout
+								</Button>
+							</div>
+						) : (
+							<Link
+								to="/login"
+								className="py-2 block"
+								onClick={() => setIsOpen(false)}
+							>
+								<Button className="w-full bg-sky-500 hover:bg-sky-600 text-white">
+									Login
+								</Button>
+							</Link>
+						)}
+					</div>
+				</div>
+			)}
+		</header>
+	);
 }

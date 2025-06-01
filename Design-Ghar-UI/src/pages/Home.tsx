@@ -17,17 +17,24 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
-      <main className="flex-grow pt-16">
-        {/* Banner Carousel */}
-        {isLoading ? (
-          <div className="h-[400px] bg-gray-200 animate-pulse" />
-        ) : (
-          <BannerCarousel banners={banners} />
-        )}
-        
-        {/* Search Bar */}
+      {/* Spacer to push SearchBar below fixed Header */}
+      <div className="h-20 w-full" />
+      {/* Centered SearchBar below Header */}
+      <div className="w-full flex justify-center items-center z-10 relative">
         <SearchBar />
+      </div>
+      <main className="flex-grow pt-8">
+        {/* Banner + Elephant Row */}
+        <div className="flex flex-row w-full max-w-[1440px] mx-auto px-4 md:px-12 lg:px-24 mb-8" style={{minHeight: '320px'}}>
+          {/* Banner occupies 80% */}
+          <div className="w-full">
+            {isLoading ? (
+              <div className="h-[320px] bg-gray-200 animate-pulse rounded-xl" />
+            ) : (
+              <BannerCarousel banners={banners} />
+            )}
+          </div>
+        </div>
         
         {/* Services Section */}
         <section className="px-6 md:px-12 lg:px-24 py-16">
