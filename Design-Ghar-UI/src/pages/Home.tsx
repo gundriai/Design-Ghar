@@ -17,12 +17,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      {/* Spacer to push SearchBar below fixed Header */}
-      <div className="h-20 w-full" />
-      {/* Centered SearchBar below Header */}
-      <div className="w-full flex justify-center items-center z-10 relative">
         <SearchBar />
-      </div>
       <main className="flex-grow pt-8">
         {/* Banner + Elephant Row */}
         <div className="flex flex-row w-full max-w-[1440px] mx-auto px-4 md:px-12 lg:px-24 mb-8" style={{minHeight: '320px'}}>
