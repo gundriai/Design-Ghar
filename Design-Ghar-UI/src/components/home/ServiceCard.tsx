@@ -1,14 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Service } from '@/types';
+import { Category } from '@/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CardHoverEffect } from '@/components/ui/CardHoverEffect';
 
-interface ServiceCardProps {
-  service: Service;
-}
 
-export default function ServiceCard({ service }: ServiceCardProps) {
+export default function ServiceCard(service: Category) {
   return (
     <CardHoverEffect>
       <Card className="h-full bg-white border border-gray-200 shadow-md transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] group-hover:shadow-xl group-hover:scale-[1.04] group-hover:border-primary/80 group-hover:bg-[linear-gradient(135deg,_rgba(0,174,239,0.15)_0%,_#fff_80%)]">
@@ -32,7 +29,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
         </CardContent>
         
         <CardFooter className="pt-0 justify-center">
-          <Link to={`/product/${service.id}`}>
+          <Link to={`/products/${service.id}`}>
             <Button 
               variant="outline" 
               className="border-primary text-primary hover:bg-primary/10"

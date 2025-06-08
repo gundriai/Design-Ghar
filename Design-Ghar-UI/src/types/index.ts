@@ -1,6 +1,6 @@
 // Type definitions for the DesignGhar application
 
-export interface Service {
+export interface Category {
   id: string;
   name: string;
   description: string;
@@ -10,7 +10,8 @@ export interface Service {
 export interface Product {
   id: string;
   title: string;
-  type: string;
+  category: string;
+  categoryId: string;
   description: string;
   price: number;
   discountedPrice?: number;

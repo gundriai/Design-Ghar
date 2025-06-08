@@ -12,29 +12,20 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProductDetail() {
-  const { id } = useParams<{ id: string }>();
-  const { products, isLoading } = useData();
-  const [product, setProduct] = useState<Product | null>(null);
+  const {categoryId, id } = useParams<{categoryId:string, id: string }>();
+  const { products,services, isLoading } = useData();
+  const [product, setProduct] = useState<Product>();
   
   useEffect(() => {
     if (!isLoading && id) {
       const foundProduct = products.find(p => p.id === id);
       if (foundProduct) {
+        foundProduct.category = services.find(service => service.id === categoryId)?.name || '';
         setProduct(foundProduct);
       }
     }
   }, [id, products, isLoading]);
 
-  // Get product type label
-  const getProductTypeLabel = (type: string) => {
-    switch (type) {
-      case 'tshirt': return 'T-Shirt';
-      case 'idcard': return 'ID Card';
-      case 'canvas': return 'Canvas';
-      case 'lanyard': return 'Lanyard & Keyring';
-      default: return type;
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -66,7 +57,7 @@ export default function ProductDetail() {
             <Breadcrumb 
               items={[
                 { label: 'Products', href: '/products' },
-                { label: getProductTypeLabel(product.type), href: `/products/${product.type}` },
+                { label: product.category, href: `/products/${product.categoryId}` },
                 { label: product.title }
               ]} 
             />
@@ -85,7 +76,7 @@ export default function ProductDetail() {
               <div className="space-y-6">
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
-                  <p className="text-indigo-600 mt-1">{getProductTypeLabel(product.type)}</p>
+                  <p className="text-indigo-600 mt-1">{product.category}</p>
                 </div>
                 
                 <p className="text-gray-600">{product.description}</p>
@@ -142,7 +133,7 @@ export default function ProductDetail() {
             <RelatedProducts 
               products={products} 
               currentProductId={product.id} 
-              productType={product.type}
+              productType={product.category}
             />
           </>
         )}

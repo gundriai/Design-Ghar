@@ -15,6 +15,8 @@ import Services from '@/pages/admin/Services';
 import Products from '@/pages/admin/Products';
 import Offers from '@/pages/admin/Offers';
 import Account from '@/pages/admin/Account';
+import ProductsCategory from './components/products/category/ProductsCategory';
+import ProductCategoryDetail from './components/products/category/ProductCategoryDetail';
 
 // Protected route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -37,7 +39,8 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/products/:categoryId/:id" element={<ProductDetail />} />
+      <Route path = "/products/:categoryId" element={<ProductCategoryDetail />} />
       <Route path="/login" element={<Login />} />
       
       {/* Admin routes */}

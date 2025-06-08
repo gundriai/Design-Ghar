@@ -63,7 +63,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             Call to Buy
           </Button>
           
-          <Link to={`/product/${product.id}`} className="flex-1">
+          <Link to={`/products/${product.categoryId}/${product.id}`} className="flex-1">
             <Button 
               variant="outline" 
               size="sm"

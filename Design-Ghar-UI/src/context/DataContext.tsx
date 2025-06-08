@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Service, Product, Banner, Offer } from '@/types';
+import { Category, Product, Banner, Offer } from '@/types';
 
 interface DataContextType {
-  services: Service[];
+  services: Category[];
   products: Product[];
   banners: Banner[];
   offers: Offer[];
@@ -10,8 +10,8 @@ interface DataContextType {
   error: string | null;
   
   // CRUD operations
-  addService: (service: Omit<Service, 'id'>) => void;
-  updateService: (service: Service) => void;
+  addService: (service: Omit<Category, 'id'>) => void;
+  updateService: (service: Category) => void;
   deleteService: (id: string) => void;
   
   addProduct: (product: Omit<Product, 'id'>) => void;
@@ -30,7 +30,7 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
-  const [services, setServices] = useState<Service[]>([]);
+  const [services, setServices] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -47,7 +47,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
       // Fetch all data in parallel
       const [servicesRes, productsRes, bannersRes, offersRes] = await Promise.all([
-        fetch('/data/services.json'),
+        fetch('/data/categories.json'),
         fetch('/data/products.json'),
         fetch('/data/banners.json'),
         fetch('/data/offers.json')
@@ -77,12 +77,12 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // CRUD operations for services
-  const addService = (service: Omit<Service, 'id'>) => {
+  const addService = (service: Omit<Category, 'id'>) => {
     const newService = { ...service, id: Date.now().toString() };
     setServices([...services, newService]);
   };
 
-  const updateService = (updatedService: Service) => {
+  const updateService = (updatedService: Category) => {
     setServices(services.map(service => 
       service.id === updatedService.id ? updatedService : service
     ));
