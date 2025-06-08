@@ -36,8 +36,8 @@ export default function Home() {
           <h2 className="text-3xl font-semibold text-center mb-12">Our Services</h2>
           
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {[...Array(4)].map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+              {[...Array(3)].map((_, i) => (
                 <div key={i} className="space-y-4">
                   <Skeleton className="h-40 w-40 rounded-full mx-auto" />
                   <Skeleton className="h-6 w-3/4 mx-auto" />
@@ -47,7 +47,7 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               {services.map((service) => (
                 <ServiceCard key={service.id} {...service} />
               ))}
