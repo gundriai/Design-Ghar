@@ -59,10 +59,18 @@ function AppRoutes() {
 function App() {
   return (
     <Router>
+      {/* Global gradient background for all screens */}
+      <div className="fixed top-0 left-0 w-full h-full z-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, #0ea4e9f8 0%, #1f9bdde0 2%, #e0f4ff 20%, #f6fbff 30%, #ffffff 100%)'
+        }}
+      />
       <AuthProvider>
         <DataProvider>
-          <AppRoutes />
-          <Toaster />
+          <div className="relative z-10">
+            <AppRoutes />
+            <Toaster />
+          </div>
         </DataProvider>
       </AuthProvider>
     </Router>

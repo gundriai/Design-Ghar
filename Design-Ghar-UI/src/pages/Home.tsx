@@ -15,7 +15,7 @@ export default function Home() {
   const featuredProducts = products.filter(product => product.featured);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col ">
       <Header />
         <SearchBar />
       <main className="flex-grow pt-8">

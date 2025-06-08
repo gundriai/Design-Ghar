@@ -34,7 +34,6 @@ export default function Header() {
 			<header
 				className={cn(
 					'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12 lg:px-24',
-					'bg-gradient-to-b from-[#00AEEF] via-[#00AEEF]/20 to-[#FFFFFF]',
 					isScrolled ? 'py-2' : 'py-4',
 					(isOpen || isScrolled) ? 'backdrop-blur-md bg-opacity-90' : ''
 				)}
