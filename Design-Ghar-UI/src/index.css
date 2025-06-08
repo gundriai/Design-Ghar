@@ -23,6 +23,15 @@
   scrollbar-width: none;
 }
 
+/* Remove blocky scroll artifacts for all scrollable elements */
+*::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 /* Base Theme Variables */
 @layer base {
   :root {
@@ -99,9 +108,6 @@
 
 /* Utility Applications */
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }

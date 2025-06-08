@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Phone, Image } from 'lucide-react';
 import { Product } from '@/types';
 import { useData } from '@/context/DataContext';
-import Header from '@/components/layout/Header';
+import TopBar from '@/components/layout/TopBar';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/products/Breadcrumb';
 import RelatedProducts from '@/components/products/RelatedProducts';
@@ -29,9 +29,10 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow pt-28 pb-16 px-6 md:px-12 lg:px-24">
+      <TopBar />
+      <div className="h-[140px]" />
+      {/* Spacer for fixed TopBar (adjust height as needed) */}
+      <main className="flex-grow pt-8 pb-16 px-6 md:px-12 lg:px-24">
         {isLoading || !product ? (
           <div className="space-y-8">
             <Skeleton className="h-6 w-64" />

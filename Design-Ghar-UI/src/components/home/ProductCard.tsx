@@ -22,7 +22,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       onHoverEnd={() => setIsHovered(false)}
     >
       <Card 
-        className="overflow-hidden h-full bg-white hover:shadow-xl transition-all"
+        className="overflow-hidden h-full hover:shadow-xl transition-all"
       >
         <CardHeader className="p-0 relative overflow-hidden aspect-square">
           <img 
