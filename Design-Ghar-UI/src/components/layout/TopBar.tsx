@@ -1,6 +1,5 @@
 import Header from '@/components/layout/Header';
 import SearchBar from '@/components/home/SearchBar';
-import { GradientBackground } from '@/components/layout/GradientBackground';
 
 export default function TopBar() {
   return (

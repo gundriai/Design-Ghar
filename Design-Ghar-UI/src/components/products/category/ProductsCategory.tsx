@@ -1,10 +1,8 @@
 import { useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useParams } from 'react-router-dom';
 
 export default function ProductsCategory() {
-    const {categoryId} = useParams<{categoryId: string}>();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
 

@@ -16,7 +16,7 @@ export default function RelatedProducts({ products, currentProductId, productTyp
   // Filter out current product and get products of the same type
   const filteredProducts = products
     .filter(product => product.id !== currentProductId)
-    .filter(product => !productType || product.type === productType)
+    .filter(product => !productType || product.category === productType)
     .slice(0, 6); // Limit to 6 products
 
   if (filteredProducts.length === 0) return null;
