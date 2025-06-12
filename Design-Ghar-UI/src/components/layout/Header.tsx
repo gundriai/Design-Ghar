@@ -33,12 +33,10 @@ export default function Header() {
 		<>
 			<header
 				className={cn(
-					'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12 lg:px-24',
-					'bg-gradient-to-b from-[#00AEEF] via-[#00AEEF]/20 to-[#FFFFFF]',
-					isScrolled ? 'py-2' : 'py-4',
-					(isOpen || isScrolled) ? 'backdrop-blur-md bg-opacity-90' : ''
+					'fixed overflow-hidden top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12 lg:px-24',
+					isScrolled ? 'py-2' : 'py-4'
 				)}
-				style={{ boxShadow: 'none', border: 'none' }}
+				style={{ boxShadow: 'none', border: 'none', borderColor: 'transparent' }}
 			>
 				<div className="flex items-center justify-between">
 					{/* Logo */}
@@ -68,10 +66,10 @@ export default function Header() {
 							variant="ghost"
 							size="icon"
 							onClick={() => setIsOpen(!isOpen)}
-							className={cn(
-								'text-gray-800',
-								isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/20'
-							)}
+							// className={cn(
+							// 	'text-gray-800',
+							// 	isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/20'
+							// )}
 						>
 							{isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
 						</Button>

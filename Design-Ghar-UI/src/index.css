@@ -4,7 +4,7 @@
 
 /* Global typography and rendering settings */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Delius', cursive, sans-serif !important;
   line-height: 1.5;
   font-weight: 400;
 
@@ -21,6 +21,15 @@
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Remove blocky scroll artifacts for all scrollable elements */
+*::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 /* Base Theme Variables */
@@ -99,9 +108,6 @@
 
 /* Utility Applications */
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }

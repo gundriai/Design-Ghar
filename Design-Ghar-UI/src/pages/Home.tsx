@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useData } from '@/context/DataContext';
-import Header from '@/components/layout/Header';
+import TopBar from '@/components/layout/TopBar';
 import Footer from '@/components/layout/Footer';
 import BannerCarousel from '@/components/home/Banner';
-import SearchBar from '@/components/home/SearchBar';
 import ServiceCard from '@/components/home/ServiceCard';
 import ProductCard from '@/components/home/ProductCard';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -15,16 +14,17 @@ export default function Home() {
   const featuredProducts = products.filter(product => product.featured);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-        <SearchBar />
+    <div className="min-h-screen flex flex-col ">
+      <TopBar />
+      <div className="h-[140px]" />
+      {/* Spacer for fixed TopBar (adjust height as needed) */}
       <main className="flex-grow pt-8">
         {/* Banner + Elephant Row */}
         <div className="flex flex-row w-full max-w-[1440px] mx-auto px-4 md:px-12 lg:px-24 mb-8" style={{minHeight: '320px'}}>
           {/* Banner occupies 80% */}
           <div className="w-full">
             {isLoading ? (
-              <div className="h-[320px] bg-gray-200 animate-pulse rounded-xl" />
+              <div className="h-[320px] animate-pulse rounded-xl" />
             ) : (
               <BannerCarousel banners={banners} />
             )}
@@ -36,8 +36,8 @@ export default function Home() {
           <h2 className="text-3xl font-semibold text-center mb-12">Our Services</h2>
           
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-              {[...Array(3)].map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
                 <div key={i} className="space-y-4">
                   <Skeleton className="h-40 w-40 rounded-full mx-auto" />
                   <Skeleton className="h-6 w-3/4 mx-auto" />
@@ -47,16 +47,16 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {services.map((service) => (
-                <ServiceCard key={service.id} service={service} />
+                <ServiceCard key={service.id} {...service} />
               ))}
             </div>
           )}
         </section>
         
         {/* Featured Products Section */}
-        <section className="px-6 md:px-12 lg:px-24 py-16 bg-gray-50">
+        <section className="px-6 md:px-12 lg:px-24 py-16">
           <h2 className="text-3xl font-semibold text-center mb-12">Popular Products</h2>
           
           {isLoading ? (
@@ -89,9 +89,9 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Testimonial 1 */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="p-6 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center text-indigo-600 font-bold text-xl">
                   A
                 </div>
                 <div className="ml-4">

@@ -1,45 +1,37 @@
 import { Link } from 'react-router-dom';
-import { Service } from '@/types';
-import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import { Category } from '@/types';
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CardHoverEffect } from '@/components/ui/CardHoverEffect';
 
-interface ServiceCardProps {
-  service: Service;
-}
 
-export default function ServiceCard({ service }: ServiceCardProps) {
+export default function ServiceCard(service: Category) {
   return (
     <CardHoverEffect>
-      <Card className="flex flex-col md:flex-row h-full bg-white border border-gray-200 shadow-md transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] group-hover:shadow-xl group-hover:scale-[1.04] group-hover:border-primary/80 group-hover:bg-[linear-gradient(135deg,_rgba(0,174,239,0.15)_0%,_#fff_80%)] overflow-hidden">
-        {/* Content Section */}
-        <div className="flex flex-col justify-between flex-1 p-6 min-h-[220px]">
-          <div className="flex-1 flex flex-col">
-            <CardTitle className="text-2xl font-bold text-primary mb-2 text-left">
+      <Card
+        className="h-[420px] min-h-[420px] w-full max-w-[370px] mx-auto bg-white border border-gray-200 shadow-md transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)] group-hover:shadow-xl group-hover:scale-[1.04] group-hover:border-primary/80 relative overflow-hidden"
+        style={{ backgroundImage: `url(${service.icon})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
+        <div className="absolute inset-0 bg-white/10 group-hover:bg-primary/10 transition-colors duration-300 z-0" />
+        <div className="relative z-10 flex flex-col h-full justify-between">
+          <CardContent className="text-center flex-1 flex items-center justify-center">
+            <CardDescription className="text-gray-700 font-medium drop-shadow">
+              {/* {service.description} */}
+            </CardDescription>
+          </CardContent>
+          <CardFooter className="pt-0 flex flex-col items-center gap-4">
+            <CardTitle className="text-2xl font-extrabold text-primary drop-shadow-md mb-2">
               {service.name}
             </CardTitle>
-            <CardDescription className="text-gray-600 text-base text-left mb-4 flex-1">
-              {service.description}
-            </CardDescription>
-          </div>
-          <div className="mt-2 flex justify-start">
-            <Link to={`/product/${service.id}`}>
-              <Button
-                variant="outline"
-                className="border-primary text-primary hover:bg-primary/10"
+            <Link to={`/products/${service.id}`} className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full border-primary text-primary hover:bg-primary/10 font-semibold"
               >
                 See More
               </Button>
             </Link>
-          </div>
-        </div>
-        {/* Image Section */}
-        <div className="flex items-center justify-center md:w-2/5 bg-[rgba(0,174,239,0.06)] p-6 md:p-0">
-          <img
-            src={service.icon}
-            alt={service.name}
-            className="w-60 h-60 object-contain drop-shadow-md"
-          />
+          </CardFooter>
         </div>
       </Card>
     </CardHoverEffect>
