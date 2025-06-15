@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { DataProvider } from '@/context/DataContext';
 import { Toaster } from '@/components/ui/toaster';
+import ScrollToTop from '@/components/layout/ScrollToTop';
 
 // Pages
 import Home from '@/pages/Home';
@@ -62,9 +63,9 @@ function AppRoutes() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="relative min-h-screen overflow-x-hidden">
         <GradientBackground />
-
         <AuthProvider>
           <DataProvider>
             <div className="relative z-10">
