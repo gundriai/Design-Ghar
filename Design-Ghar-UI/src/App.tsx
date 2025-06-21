@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { DataProvider } from '@/context/DataContext';
@@ -16,7 +15,6 @@ import Services from '@/pages/admin/Services';
 import Products from '@/pages/admin/Products';
 import Offers from '@/pages/admin/Offers';
 import Account from '@/pages/admin/Account';
-import ProductsCategory from './components/products/category/ProductsCategory';
 import ProductCategoryDetail from './components/products/category/ProductCategoryDetail';
 import { GradientBackground } from './components/layout/GradientBackground';
 
