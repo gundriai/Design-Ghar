@@ -1,18 +1,21 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
-import { Demo, DemoSchema } from './demo.schema';
-import { DemoController } from './demo.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot(process.env.MONGO_URI + '&dbName=DesignGhar'),
-    MongooseModule.forFeature([{ name: Demo.name, schema: DemoSchema }]),
+    TypeOrmModule.forRoot({
+      type: 'mongodb',
+      url: process.env.MONGO_URI,
+      database: 'DesignGhar',
+      synchronize: true,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    }),
   ],
-  controllers: [AppController, DemoController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
