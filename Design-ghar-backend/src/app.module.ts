@@ -7,11 +7,14 @@ import { AuthModule } from './auth/auth.module';
 import { typeOrmConfig } from './ormconfig';
 import { User } from './user/user.entity';
 import { SeederService } from './seeder/seeder.service';
+import { Product } from './product/product.entity';
+import { Category } from './category/category.entity';
+import { Banner } from './banner/banner.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User,Product,Category,Banner]),
     AuthModule,
     UserModule
   ],

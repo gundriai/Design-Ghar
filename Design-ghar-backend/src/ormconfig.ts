@@ -1,6 +1,9 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import * as dotenv from 'dotenv';
+import { Product } from './product/product.entity';
+import { Category } from './category/category.entity';
+import { Banner } from './banner/banner.entity';
 
 dotenv.config();
 
@@ -10,6 +13,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mongodb',
   url: process.env.MONGO_URI,
   synchronize: true,
-  entities: [User],
+  entities: [User,Product,Category,Banner],
   ssl: true, // Use SSL for secure connection
 };
