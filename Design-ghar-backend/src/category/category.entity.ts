@@ -1,8 +1,7 @@
 import { Entity, ObjectIdColumn, ObjectId, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 @Entity('category')
-@Index(['isActive', 'sortOrder'])
-@Index(['sku'], { unique: true })
+@Index(['isActive', 'sequence'])
 export class Category {
     @ObjectIdColumn()
     id: ObjectId;
