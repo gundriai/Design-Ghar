@@ -27,7 +27,7 @@ export class Product {
     categoryName?: string;
 
     @Column({ nullable: true })
-    mediaURL?: string;
+    mediaURLs?: string[];
 
     @ManyToOne(() => Category)
     @JoinColumn({ name: 'categoryId' })

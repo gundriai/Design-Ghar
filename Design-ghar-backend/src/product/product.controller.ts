@@ -10,8 +10,11 @@ import {
     Body,
     Query,
     UseGuards,
+    UseInterceptors,
+    UploadedFiles,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiConsumes } from '@nestjs/swagger';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 import { ProductService } from './product.service';
 
@@ -26,12 +29,16 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { ObjectId } from 'mongodb';
+import { CloudinaryService } from '../common/cloudinary.service';
 
 
 @ApiTags("Products")
 @Controller({ path: 'products' })
 export class ProductController {
-    constructor(private readonly service: ProductService) { }
+    constructor(
+        private readonly service: ProductService,
+        private readonly cloudinary: CloudinaryService,
+    ) { }
 
     @Get()
     list(@Query() q: QueryProductDto) {
@@ -63,7 +70,19 @@ export class ProductController {
     @Roles('admin')
     @ApiBearerAuth('JWT')
     @Post()
-    create(@Body() dto: CreateProductDto) {
+    @UseInterceptors(FilesInterceptor('files'))
+    @ApiConsumes('multipart/form-data')
+    async create(
+        @UploadedFiles() files: Array<Express.Multer.File>,
+        @Body() dto: CreateProductDto
+    ) {
+        let mediaURLs: string[] = [];
+        if (files && files.length) {
+            dto.mediaURLs = await Promise.all(files.map(file => this.cloudinary.uploadImage(file)));
+        } 
+        // else if (dto.mediaURLs) {
+        //     mediaURLs = [...dto.mediaURLs];
+        // }
         return this.service.create(dto);
     }
 
