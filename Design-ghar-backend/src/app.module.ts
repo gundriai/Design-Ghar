@@ -10,13 +10,15 @@ import { SeederService } from './seeder/seeder.service';
 import { Product } from './product/product.entity';
 import { Category } from './category/category.entity';
 import { Banner } from './banner/banner.entity';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     TypeOrmModule.forFeature([User,Product,Category,Banner]),
     AuthModule,
-    UserModule
+    UserModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService,SeederService],

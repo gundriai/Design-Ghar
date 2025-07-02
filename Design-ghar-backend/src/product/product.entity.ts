@@ -1,10 +1,9 @@
-import { Entity, ObjectIdColumn, ObjectId, Column, CreateDateColumn, UpdateDateColumn, Index, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, ObjectIdColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { ObjectId } from 'mongodb';
 import { Category } from '../category/category.entity';
 
+@Index('IDX_isActive_isFeatured', ['isActive', 'isFeatured'])
 @Entity('product')
-@Index(['isActive', 'isFeatured'])
-@Index(['name', 'description'])
-@Index(['sku'], { unique: true })
 export class Product {
     @ObjectIdColumn()
     id: ObjectId;
@@ -22,11 +21,13 @@ export class Product {
     features?: string;
 
     @Column({ nullable: false })
-    categoryId: string; // Reference to Category (ObjectId as string)
-    // If you want to use a relation, you can uncomment the following:
+    categoryId: string;
 
     @Column({ nullable: true })
-    categoryName?: string; // optional, for denormalization
+    categoryName?: string;
+
+    @Column({ nullable: true })
+    mediaURLs?: string[];
 
     @ManyToOne(() => Category)
     @JoinColumn({ name: 'categoryId' })
