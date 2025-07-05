@@ -11,6 +11,7 @@ import { Product } from './product/product.entity';
 import { Category } from './category/category.entity';
 import { Banner } from './banner/banner.entity';
 import { ProductModule } from './product/product.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { ProductModule } from './product/product.module';
     TypeOrmModule.forFeature([User,Product,Category,Banner]),
     AuthModule,
     UserModule,
-    ProductModule
+    ProductModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService,SeederService],
