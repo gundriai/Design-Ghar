@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, ShoppingBag, Users, ShoppingCart, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Header from '@/components/layout/Header';
-import Sidebar from '@/components/layout/Sidebar';
+import Sidebar from '@/components/admin/Sidebar';
 import { useData } from '@/context/DataContext';
 
 export default function Dashboard() {
@@ -47,8 +46,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      
       <div className="flex flex-1">
         <Sidebar />
         
