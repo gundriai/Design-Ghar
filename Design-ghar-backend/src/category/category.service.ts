@@ -28,13 +28,14 @@ export class CategoryService {
   }
 
   async findById(id: string) {
-    const category = await this.categoryRepo.findOne({ where: { id: new ObjectId(id) } });
+    const category = await this.categoryRepo.findOne({ where: { _id: new ObjectId(id) } });
     if (!category) throw new NotFoundException('Category not found');
     return category;
   }
 
   async update(id: string, data: Partial<Category>) {
-    const category = await this.categoryRepo.findOne({ where: { id: new ObjectId(id) } });
+    console.log('id passed to update:', id);
+    const category = await this.categoryRepo.findOne({ where: { _id: new ObjectId(id) } });
     if (!category) throw new NotFoundException('Category not found');
     this.categoryRepo.merge(category, data);
     return this.categoryRepo.save(category);
