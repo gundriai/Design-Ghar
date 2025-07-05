@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Header from '@/components/layout/Header';
-import Sidebar from '@/components/layout/Sidebar';
+import Sidebar from '@/components/admin/Sidebar';
 import BannerTable from '@/components/admin/BannerTable';
 import OfferTable from '@/components/admin/OfferTable';
 
@@ -10,8 +9,6 @@ export default function Offers() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      
       <div className="flex flex-1">
         <Sidebar />
         

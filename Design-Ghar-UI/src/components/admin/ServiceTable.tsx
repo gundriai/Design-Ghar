@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Service } from '@/types';
+import { Category } from '@/types';
 import { useData } from '@/context/DataContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -24,10 +24,10 @@ export default function ServiceTable() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedService, setSelectedService] = useState<Category | null>(null);
   
   // Form state
-  const [formData, setFormData] = useState<Omit<Service, 'id'>>({
+  const [formData, setFormData] = useState<Omit<Category, 'id'>>({
     name: '',
     description: '',
     icon: '',
@@ -71,7 +71,7 @@ export default function ServiceTable() {
     setIsAddOpen(false);
   };
 
-  const handleEditClick = (service: Service) => {
+  const handleEditClick = (service: Category) => {
     setSelectedService(service);
     setFormData({
       name: service.name,
@@ -103,7 +103,7 @@ export default function ServiceTable() {
     setIsEditOpen(false);
   };
 
-  const handleDeleteClick = (service: Service) => {
+  const handleDeleteClick = (service: Category) => {
     setSelectedService(service);
     setIsDeleteOpen(true);
   };

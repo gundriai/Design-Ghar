@@ -42,13 +42,13 @@ export default function Sidebar() {
   return (
     <div 
       className={cn(
-        "bg-white border-r border-gray-200 h-screen transition-all duration-300 sticky top-0",
+        "bg-white border-r border-gray-200 h-screen transition-all duration-300 sticky top-0 flex flex-col",
         collapsed ? "w-16" : "w-64"
       )}
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         {!collapsed && (
-          <Link to="/admin\" className="text-lg font-semibold text-indigo-600">
+          <Link to="/admin" className="text-lg font-semibold text-indigo-600">
             Admin Panel
           </Link>
         )}
@@ -62,7 +62,7 @@ export default function Sidebar() {
         </Button>
       </div>
 
-      <nav className="p-2">
+      <nav className="p-2 flex-1 overflow-y-auto">
         <ul className="space-y-1">
           {menuItems.map((item) => (
             <li key={item.href}>
@@ -84,7 +84,7 @@ export default function Sidebar() {
         </ul>
       </nav>
 
-      <div className="absolute bottom-0 w-full p-4 border-t border-gray-200">
+      <div className="absolute bottom-0 w-full p-4 border-t border-gray-200 bg-white">
         <Link to="/" className="flex items-center">
           {collapsed ? (
             <Layout className="h-5 w-5 text-indigo-600" />
