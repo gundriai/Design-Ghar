@@ -36,10 +36,14 @@ export default function Products() {
               <>
                 <div className="flex justify-end mb-4">
                   <button
-                  className="inline-flex items-center px-4 py-2 bg-primary text-white rounded"
-                  onClick={() => setShowForm(true)}
+                    onClick={() => setShowForm(true)}
                   >
-                  <span className="mr-2">+</span> Add Product
+                    <span className="bg-blue-100 text-blue-800 text-sm inline-flex items-center px-2 py-2 rounded-sm dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                      <svg className="w-5 h-5 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+                      </svg>
+                      Add Product
+                    </span>
                   </button>
                 </div>
                 <ProductTable />
