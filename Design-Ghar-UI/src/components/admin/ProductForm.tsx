@@ -245,13 +245,13 @@ const ProductForm = () => {
           {/* Right Column - Image Upload and Gallery */}
           <div className="space-y-6">
             {/* Main Image Upload Area */}
-            {productImages.length > 0 ? (
+            {productImages.length > 0 && (
               <Carousel className="w-full h-64 bg-gray-100 rounded-lg relative">
                 <div className="relative h-64">
                   <CarouselContent className="h-64">
-                    {productImages.map((image) => (
+                    {productImages.map((image, idx) => (
                       <CarouselItem key={image.id} className="h-64">
-                        <div className="p-1 h-full flex items-center justify-center">
+                        <div className="p-1 h-full flex items-center justify-center relative">
                           <Card className="h-full w-full flex items-center justify-center">
                             <CardContent className="flex items-center justify-center h-full p-2">
                               <img
@@ -261,6 +261,16 @@ const ProductForm = () => {
                               />
                             </CardContent>
                           </Card>
+                          <button
+                            type="button"
+                            className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center shadow hover:bg-red-600 focus:outline-none"
+                            aria-label="Remove image"
+                            onClick={() => setProductImages(productImages.filter((_, i) => i !== idx))}
+                          >
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M0.877075 7.49988C0.877075 3.84219 3.84222 0.877045 7.49991 0.877045C11.1576 0.877045 14.1227 3.84219 14.1227 7.49988C14.1227 11.1575 11.1576 14.1227 7.49991 14.1227C3.84222 14.1227 0.877075 11.1575 0.877075 7.49988ZM7.49991 1.82704C4.36689 1.82704 1.82708 4.36686 1.82708 7.49988C1.82708 10.6329 4.36689 13.1727 7.49991 13.1727C10.6329 13.1727 13.1727 10.6329 13.1727 7.49988C13.1727 4.36686 10.6329 1.82704 7.49991 1.82704ZM9.85358 5.14644C10.0488 5.3417 10.0488 5.65829 9.85358 5.85355L8.20713 7.49999L9.85358 9.14644C10.0488 9.3417 10.0488 9.65829 9.85358 9.85355C9.65832 10.0488 9.34173 10.0488 9.14647 9.85355L7.50002 8.2071L5.85358 9.85355C5.65832 10.0488 5.34173 10.0488 5.14647 9.85355C4.95121 9.65829 4.95121 9.3417 5.14647 9.14644L6.79292 7.49999L5.14647 5.85355C4.95121 5.65829 4.95121 5.3417 5.14647 5.14644C5.34173 4.95118 5.65832 4.95118 5.85358 5.14644L7.50002 6.79289L9.14647 5.14644C9.34173 4.95118 9.65832 4.95118 9.85358 5.14644Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+                            </svg>
+                          </button>
                         </div>
                       </CarouselItem>
                     ))}
@@ -269,10 +279,6 @@ const ProductForm = () => {
                   <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white shadow rounded-full border border-gray-300" />
                 </div>
               </Carousel>
-            ) : (
-              <div className="bg-gray-300 h-64 rounded-lg flex items-center justify-center text-gray-400">
-                <span className="text-lg">No images uploaded</span>
-              </div>
             )}
 
             {/* Product Gallery */}
@@ -315,33 +321,6 @@ const ProductForm = () => {
                   tabIndex={-1}
                 />
               </div>
-
-              {/* Image List */}
-              {productImages.length > 0 && (
-                <div className="space-y-3">
-                  {productImages.map((image, idx) => (
-                    <div key={image.id} className="flex items-center gap-3 p-3 bg-white rounded-lg border relative group">
-                      <div className="w-12 h-12 bg-gray-300 rounded flex-shrink-0 overflow-hidden">
-                        <img src={image.url} alt={image.name} className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">{image.name}</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setProductImages(productImages.filter((_, i) => i !== idx))}
-                        className="ml-auto flex items-center justify-center bg-red-500 text-white rounded-full transition-transform duration-200 group-hover:scale-110 group-hover:animate-shake focus:outline-none shadow hover:bg-red-600"
-                        aria-label="Remove image"
-                        style={{ width: 32, height: 32 }}
-                      >
-                        <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M0.877075 7.49988C0.877075 3.84219 3.84222 0.877045 7.49991 0.877045C11.1576 0.877045 14.1227 3.84219 14.1227 7.49988C14.1227 11.1575 11.1576 14.1227 7.49991 14.1227C3.84222 14.1227 0.877075 11.1575 0.877075 7.49988ZM7.49991 1.82704C4.36689 1.82704 1.82708 4.36686 1.82708 7.49988C1.82708 10.6329 4.36689 13.1727 7.49991 13.1727C10.6329 13.1727 13.1727 10.6329 13.1727 7.49988C13.1727 4.36686 10.6329 1.82704 7.49991 1.82704ZM9.85358 5.14644C10.0488 5.3417 10.0488 5.65829 9.85358 5.85355L8.20713 7.49999L9.85358 9.14644C10.0488 9.3417 10.0488 9.65829 9.85358 9.85355C9.65832 10.0488 9.34173 10.0488 9.14647 9.85355L7.50002 8.2071L5.85358 9.85355C5.65832 10.0488 5.34173 10.0488 5.14647 9.85355C4.95121 9.65829 4.95121 9.3417 5.14647 9.14644L6.79292 7.49999L5.14647 5.85355C4.95121 5.65829 4.95121 5.3417 5.14647 5.14644C5.34173 4.95118 5.65832 4.95118 5.85358 5.14644L7.50002 6.79289L9.14647 5.14644C9.34173 4.95118 9.65832 4.95118 9.85358 5.14644Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         </div>

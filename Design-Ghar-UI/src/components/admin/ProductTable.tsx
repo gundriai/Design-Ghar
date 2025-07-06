@@ -7,7 +7,6 @@ import {
   TableCell 
 } from '@/components/ui/table';
 import { Edit, Trash2 } from 'lucide-react';
-import { Product } from '@/types';
 import { useData } from '@/context/DataContext';
 
 export default function ProductTable() {
@@ -63,13 +62,11 @@ export default function ProductTable() {
                 <div className="flex justify-end space-x-2">
                   <button
                     className="p-2 border rounded text-gray-500 bg-white"
-                    disabled
                   >
                     <Edit className="h-4 w-4" />
                   </button>
                   <button
                     className="p-2 border rounded text-red-500 bg-white"
-                    disabled
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
