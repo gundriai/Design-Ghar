@@ -5,8 +5,14 @@ import { UserRole } from "@/common/enums/UserRole";
 export interface Category {
   id: string;
   name: string;
-  description: string;
-  icon: string;
+  sku: string;
+  description?: string;
+  imageUrl?: string;
+  isActive: boolean;
+  sequence: number;
+  tags?: string[];
+  createdAt: string; // ISO string for Date
+  updatedAt: string; // ISO string for Date
 }
 
 export interface Product {

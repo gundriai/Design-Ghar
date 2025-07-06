@@ -18,7 +18,7 @@ export class Category {
     @Column({ nullable: true })
     imageUrl?: string;
 
-    @Column({ default: true })
+    @Column()
     isActive: boolean;
 
     @Column({ type: 'int', nullable: false })

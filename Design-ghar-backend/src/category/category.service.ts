@@ -35,6 +35,7 @@ export class CategoryService {
 
   async update(id: string, data: Partial<Category>) {
     console.log('id passed to update:', id);
+    console.log('data passed to update:', data);
     const category = await this.categoryRepo.findOne({ where: { _id: new ObjectId(id) } });
     if (!category) throw new NotFoundException('Category not found');
     this.categoryRepo.merge(category, data);

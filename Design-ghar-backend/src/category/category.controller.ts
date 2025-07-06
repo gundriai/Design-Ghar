@@ -63,6 +63,7 @@ export class CategoryController {
   @ApiOperation({ summary: 'Update a category, optionally with new image' })
   @ApiResponse({ status: 200, description: 'Category updated.' })
   async update(@Param('id') id: string, @UploadedFile() image: Express.Multer.File, @Body() dto: UpdateCategoryDto) {
+    console.log('data passed to update:', dto);
     const updateData: any = { ...dto };
     if (image) {
       updateData.imageUrl = await this.service.uploadImageToCloud(image);
