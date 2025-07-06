@@ -1,5 +1,7 @@
 // Type definitions for the DesignGhar application
 
+import { UserRole } from "@/common/enums/UserRole";
+
 export interface Category {
   id: string;
   name: string;
@@ -43,7 +45,13 @@ export interface Offer {
 }
 
 export interface User {
-  id: string;
+  sub: string; // backend returns 'sub' as user id
   name: string;
   email: string;
+  role: UserRole;
+}
+
+export interface AuthResponse {
+  access_token: string;
+  user: User;
 }
