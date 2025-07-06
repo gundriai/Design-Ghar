@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Sidebar from '@/components/admin/Sidebar';
 import ServiceTable from '@/components/admin/ServiceTable';
 import ServiceForm from '@/components/admin/ServiceForm';
-import { useData } from '@/context/DataContext';
+import { categoryData } from '@/context/CategoryContext';
 import { Category } from '@/types';
 
 export default function Services() {
-  const { services, addService, updateService, deleteService } = useData();
+  const { categories, addCategory, updateCategory, deleteCategory } = categoryData();
   const [view, setView] = useState<'table' | 'add' | 'edit'>('table');
   const [editService, setEditService] = useState<Category | null>(null);
 
@@ -41,13 +41,13 @@ export default function Services() {
     setView('edit');
   };
   const handleDelete = (service: Category) => {
-    deleteService(service.id);
+    deleteCategory(service.id);
   };
-  const handleSave = (data: Omit<Category, 'id'>) => {
+  const handleSave = (formData: FormData) => {
     if (view === 'add') {
-      addService(data);
+      addCategory(formData);
     } else if (view === 'edit' && editService) {
-      updateService({ ...editService, ...data });
+      updateCategory(editService.id, formData);
     }
     setView('table');
   };
@@ -76,7 +76,7 @@ export default function Services() {
                   </button>
                 </div>
                 <ServiceTable
-                  services={services}
+                  services={categories}
                   onEdit={handleEdit}
                   onDelete={handleDelete}
                 />

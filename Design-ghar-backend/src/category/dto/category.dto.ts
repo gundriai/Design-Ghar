@@ -1,3 +1,4 @@
+import { Transform, Type } from 'class-transformer';
 import { IsString, IsOptional, IsBoolean, IsInt, IsArray } from 'class-validator';
 
 export class CreateCategoryDto {
@@ -17,9 +18,12 @@ export class CreateCategoryDto {
 
   @IsOptional()
   @IsBoolean()
+  @Type(() => Boolean)
+
   isActive?: boolean;
 
   @IsInt()
+  @Type(() => Number)
   sequence: number;
 
   @IsOptional()
@@ -47,10 +51,15 @@ export class UpdateCategoryDto {
 
   @IsOptional()
   @IsBoolean()
+  @Transform(({ obj }) => {
+    return obj.isActive === 'true';
+  })
+  @Type(() => Boolean)
   isActive?: boolean;
 
   @IsOptional()
   @IsInt()
+  @Type(() => Number)
   sequence?: number;
 
   @IsOptional()
