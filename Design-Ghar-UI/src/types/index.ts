@@ -17,15 +17,22 @@ export interface Category {
 
 export interface Product {
   id: string;
-  title: string;
-  category: string;
-  categoryId: string;
+  name: string;
+  sku: string;
   description: string;
-  price: number;
-  discountedPrice?: number;
-  discount?: number;
-  featured: boolean;
-  image: string;
+  features?: string;
+  categoryId: string;
+  categoryName?: string;
+  mediaURLs?: string[];
+  basePrice: number;
+  discountPercentage?: number;
+  finalPrice: number;
+  isActive: boolean;
+  isFeatured: boolean;
+  viewCount: number;
+  tags?: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Banner {

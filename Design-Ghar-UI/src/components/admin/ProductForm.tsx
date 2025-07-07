@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Check, Image } from "lucide-react";
 import { Carousel, CarouselItem, CarouselPrevious, CarouselNext, CarouselContent } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
+import { createProduct, CreateProductPayload } from '@/services/product.service';
+import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { categoryData } from '@/context/CategoryContext';
 
 interface ProductImage {
   id: string;
@@ -13,26 +17,39 @@ interface ProductImage {
   url?: string;
 }
 
-const ProductForm = () => {
+const ProductForm: React.FC = () => {
   const [formData, setFormData] = useState({
     productName: '',
     description: '',
-    category: '',
+    categoryId: '',
+    categoryName: '',
     brandName: '',
-    sku: 'Fox-3983',
-    stockQuantity: '1258',
-    regularPrice: '₹1000',
-    salePrice: '₹450'
+    sku: '',
+    stockQuantity: '',
+    regularPrice: '',
+    salePrice: ''
   });
-  
+  const {token} = useAuth();
+  const { categories } = categoryData();
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [productImages, setProductImages] = useState<ProductImage[]>([]);
   const dropRef = useRef<HTMLDivElement>(null);
   const [dragActive, setDragActive] = useState(false);
-
+  const [saving, setSaving] = useState(false);
+  const { toast } = useToast();
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedId = e.target.value;
+    const selectedCategory = categories.find(cat => cat.id === selectedId);
+    setFormData(prev => ({
+      ...prev,
+      categoryId: selectedId,
+      categoryName: selectedCategory ? selectedCategory.name : ''
+    }));
   };
 
   // Drag and drop handlers
@@ -94,6 +111,41 @@ const ProductForm = () => {
     setTags(tags.filter((_, i) => i !== index));
   };
 
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      // Prepare payload
+      const payload: CreateProductPayload = {
+        name: formData.productName,
+        description: formData.description,
+        sku: formData.sku,
+        categoryName: formData.categoryName,
+        categoryId: formData.categoryId,
+        basePrice: Number(formData.regularPrice.replace(/[^\d.]/g, '')),
+        finalPrice: Number(formData.salePrice.replace(/[^\d.]/g, '')),
+        isFeatured: false,
+        isActive: true,
+        tags: [...tags],
+        viewCount: 100,
+        files: productImages.map(img => img.file).filter((file): file is File => Boolean(file)),
+      };
+      const response = await createProduct(payload, token as string);
+      if(response != null){
+        toast({
+          title: "Product created successfully",
+          description: "Your product has been added to the catalog.",
+          duration: 3000,
+        });
+      }
+      // Optionally show success toast or reset form
+    } catch (err) {
+      // Optionally show error toast
+      console.error(err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
@@ -131,12 +183,16 @@ const ProductForm = () => {
               <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Category
               </label>
-              <Input
-                placeholder="Type Category here"
-                value={formData.category}
-                onChange={(e) => handleInputChange('category', e.target.value)}
-                className="w-full"
-              />
+              <select
+                value={formData.categoryId}
+                onChange={handleCategoryChange}
+                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <option value="">Select Category</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>{cat.name}</option>
+                ))}
+              </select>
             </div>
 
             {/* Brand Name */}
@@ -328,8 +384,10 @@ const ProductForm = () => {
         <div className="flex gap-3 pt-8 justify-start">
           <Button 
             className="bg-blue-600 hover:bg-blue-700 text-white"
+            onClick={handleSave}
+            disabled={saving}
           >
-            SAVE
+            {saving ? 'Saving...' : 'SAVE'}
           </Button>
           <Button 
             variant="outline" 
