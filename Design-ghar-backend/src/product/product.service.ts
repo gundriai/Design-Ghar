@@ -39,8 +39,8 @@ export class ProductService {
 
     const where: Record<string, any> = {};
     if (categoryId) where.categoryId = categoryId;
-    if (isFeatured !== undefined) where.isFeatured = isFeatured === 'true';
-    if (isActive !== undefined) where.isActive = isActive === 'true';
+    // if (isFeatured !== undefined) where.isFeatured = isFeatured === 'true';
+    // if (isActive !== undefined) where.isActive = isActive === 'true';
     if (tags?.length) where.tags = { $all: tags };
     if (minPrice || maxPrice) {
       where.finalPrice = {
