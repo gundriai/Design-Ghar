@@ -62,3 +62,18 @@ export async function getProducts(page = 1, limit = 20): Promise<GetProductsResp
   }
   return response.json();
 }
+
+export async function updateProductStatus(productId: string, isActive: boolean): Promise<void> {
+  const response = await fetch(`${BASE_URL}products/${productId}/activate`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}` || '',
+    },
+    body: JSON.stringify({ isActive }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update product status');
+  }
+}

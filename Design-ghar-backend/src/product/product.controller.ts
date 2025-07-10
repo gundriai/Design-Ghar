@@ -101,6 +101,8 @@ export class ProductController {
     @Roles('admin')
     @ApiBearerAuth('JWT')
     @Patch(':id')
+    @UseInterceptors(FilesInterceptor('files'))
+    @ApiConsumes('multipart/form-data')
     update(
         @Param('id', ParseMongoIdPipe) id: ObjectId,
         @Body() dto: UpdateProductDto,

@@ -9,18 +9,28 @@ import {
 import { Edit, Trash2 } from 'lucide-react';
 import { Product } from '@/types';
 import { Switch } from '@/components/ui/switch';
+import { updateProductStatus } from '@/services/product.service';
 
 interface ProductTableProps {
   products: Product[];
   onEdit: (product: Product) => void;
   onDelete: (product: Product) => void;
+  onProductUpdate?: (updatedProduct: Product) => void; // Add this callback
 }
 
-export default function ProductTable({ products, onEdit, onDelete }: ProductTableProps) {
-  const handleToggleActive = (product: Product) => {
-    // Logic to toggle isActive status
-    product.isActive = !product.isActive;
-    // Call API or update context here
+export default function ProductTable({ products, onEdit, onDelete, onProductUpdate }: ProductTableProps) {
+  const handleToggleActive = async (product: Product) => {
+    try {
+      const updatedProduct = { ...product, isActive: !product.isActive };
+      await updateProductStatus(product.id, updatedProduct.isActive);
+      
+      // Call the callback to update the parent state
+      if (onProductUpdate) {
+        onProductUpdate(updatedProduct);
+      }
+    } catch (error) {
+      console.error('Failed to update product status:', error);
+    }
   };
 
   return (
@@ -73,7 +83,7 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
               <TableCell>
                 <Switch
                   checked={product.isActive}
-                  onChange={() => handleToggleActive(product)}
+                  onCheckedChange={() => handleToggleActive(product)}
                 />
               </TableCell>
               <TableCell className="text-right">

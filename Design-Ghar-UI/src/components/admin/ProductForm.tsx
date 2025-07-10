@@ -1,14 +1,20 @@
 import React, { useState, useRef } from 'react';
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Check, Image } from "lucide-react";
-import { Carousel, CarouselItem, CarouselPrevious, CarouselNext, CarouselContent } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
-import { createProduct, CreateProductPayload } from '@/services/product.service';
-import { useAuth } from '@/context/AuthContext';
+import { useForm, Controller } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Image } from 'lucide-react';
+import {
+  Carousel,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselContent,
+} from '@/components/ui/carousel';
+import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { categoryData } from '@/context/CategoryContext';
+import { Product } from '@/types';
 
 interface ProductImage {
   id: string;
@@ -17,81 +23,48 @@ interface ProductImage {
   url?: string;
 }
 
-const ProductForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    productName: '',
-    description: '',
-    categoryId: '',
-    categoryName: '',
-    brandName: '',
-    sku: '',
-    stockQuantity: '',
-    regularPrice: '',
-    salePrice: ''
-  });
-  const {token} = useAuth();
+interface ProductFormProps {
+  mode: 'add' | 'edit';
+  initialData: Partial<Product>;
+  onSave: (formData: FormData) => void;
+  onCancel: () => void;
+}
+
+const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, onSave, onCancel }) => {
   const { categories } = categoryData();
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(initialData.tags || []);
   const [tagInput, setTagInput] = useState('');
-  const [productImages, setProductImages] = useState<ProductImage[]>([]);
+  const [productImages, setProductImages] = useState<ProductImage[]>(
+    initialData.mediaURLs?.map((url, idx) => ({
+      id: `${Date.now()}-${idx}`,
+      name: `Image-${idx + 1}`,
+      url,
+    })) || []
+  );
   const dropRef = useRef<HTMLDivElement>(null);
   const [dragActive, setDragActive] = useState(false);
-  const [saving, setSaving] = useState(false);
   const { toast } = useToast();
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+
+  const { control, handleSubmit, getValues, setValue } = useForm({
+    defaultValues: {
+      productName: initialData.name || '',
+      description: initialData.description || '',
+      categoryId: initialData.categoryId || '',
+      categoryName: initialData.categoryName || '',
+      sku: initialData.sku || '',
+      regularPrice: initialData.basePrice?.toString() || '',
+      salePrice: initialData.finalPrice?.toString() || '',
+      tags: initialData.tags || [],
+    },
+  });
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = e.target.value;
-    const selectedCategory = categories.find(cat => cat.id === selectedId);
-    setFormData(prev => ({
-      ...prev,
-      categoryId: selectedId,
-      categoryName: selectedCategory ? selectedCategory.name : ''
-    }));
+    const selectedCategory = categories.find((cat) => cat.id === selectedId);
+    setValue('categoryId', selectedId);
+    setValue('categoryName', selectedCategory?.name || '');
   };
 
-  // Drag and drop handlers
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    const files = Array.from(e.dataTransfer.files);
-    handleFiles(files);
-  };
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files ? Array.from(event.target.files) : [];
-    handleFiles(files);
-  };
-
-  const handleFiles = (files: File[]) => {
-    const allowedTypes = ['image/png', 'image/jpeg'];
-    const validFiles = files.filter(file => allowedTypes.includes(file.type));
-    if (validFiles.length === 0) return;
-    const newImages = validFiles.map((file, idx) => ({
-      id: `${Date.now()}-${idx}`,
-      name: file.name,
-      file,
-      url: URL.createObjectURL(file),
-    }));
-    setProductImages(prev => [...prev, ...newImages]);
-  };
-
-  // Tag input handlers
   const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTagInput(e.target.value);
   };
@@ -111,44 +84,97 @@ const ProductForm: React.FC = () => {
     setTags(tags.filter((_, i) => i !== index));
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    try {
-      // Prepare payload
-      const payload: CreateProductPayload = {
-        name: formData.productName,
-        description: formData.description,
-        sku: formData.sku,
-        categoryName: formData.categoryName,
-        categoryId: formData.categoryId,
-        basePrice: Number(formData.regularPrice.replace(/[^\d.]/g, '')),
-        finalPrice: Number(formData.salePrice.replace(/[^\d.]/g, '')),
-        isFeatured: false,
-        isActive: true,
-        tags: [...tags],
-        viewCount: 100,
-        files: productImages.map(img => img.file).filter((file): file is File => Boolean(file)),
-      };
-      const response = await createProduct(payload, token as string);
-      if(response != null){
-        toast({
-          title: "Product created successfully",
-          description: "Your product has been added to the catalog.",
-          duration: 3000,
-        });
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragActive(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragActive(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragActive(false);
+    const files = Array.from(e.dataTransfer.files);
+    handleFiles(files);
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files ? Array.from(event.target.files) : [];
+    handleFiles(files);
+  };
+
+  const handleFiles = (files: File[]) => {
+    const allowedTypes = ['image/png', 'image/jpeg'];
+    const validFiles = files.filter((file) => allowedTypes.includes(file.type));
+    if (validFiles.length === 0) return;
+    const newImages = validFiles.map((file, idx) => ({
+      id: `${Date.now()}-${idx}`,
+      name: file.name,
+      file,
+      url: URL.createObjectURL(file),
+    }));
+    setProductImages((prev) => [...prev, ...newImages]);
+  };
+
+  const onSubmit = () => {
+    const formValues = getValues();
+    const formDataObj = new FormData();
+
+    if (mode === 'add') {
+      // Append all values for add mode
+      formDataObj.append('name', formValues.productName);
+      formDataObj.append('description', formValues.description);
+      formDataObj.append('sku', formValues.sku);
+      formDataObj.append('categoryName', formValues.categoryName);
+      formDataObj.append('categoryId', formValues.categoryId);
+      formDataObj.append('basePrice', formValues.regularPrice);
+      formDataObj.append('finalPrice', formValues.salePrice);
+    } else if (mode === 'edit') {
+      // Append only changed values for edit mode
+      if (initialData.name !== formValues.productName) {
+        formDataObj.append('name', formValues.productName);
       }
-      // Optionally show success toast or reset form
-    } catch (err) {
-      // Optionally show error toast
-      console.error(err);
-    } finally {
-      setSaving(false);
+      if (initialData.description !== formValues.description) {
+        formDataObj.append('description', formValues.description);
+      }
+      if (initialData.sku !== formValues.sku) {
+        formDataObj.append('sku', formValues.sku);
+      }
+      if (initialData.categoryName !== formValues.categoryName) {
+        formDataObj.append('categoryName', formValues.categoryName);
+      }
+      if (initialData.categoryId !== formValues.categoryId) {
+        formDataObj.append('categoryId', formValues.categoryId);
+      }
+      if (initialData.basePrice?.toString() !== formValues.regularPrice) {
+        formDataObj.append('basePrice', formValues.regularPrice);
+      }
+      if (initialData.finalPrice?.toString() !== formValues.salePrice) {
+        formDataObj.append('finalPrice', formValues.salePrice);
+      }
     }
+
+    tags.forEach((tag) => formDataObj.append('tags', tag));
+    productImages.forEach((image) => {
+      if (image.file) {
+        formDataObj.append('images', image.file);
+      }
+    });
+
+    onSave(formDataObj);
+    toast({
+      title: mode === 'add' ? 'Product created successfully' : 'Product updated successfully',
+      description: mode === 'add' ? 'Your product has been added.' : 'Your product has been updated.',
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
+        <h2 className="text-lg font-semibold mb-4">{mode === 'add' ? 'Add Product' : 'Edit Product'}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Form Fields */}
           <div className="space-y-6">
@@ -157,11 +183,16 @@ const ProductForm: React.FC = () => {
               <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Product Name
               </label>
-              <Input
-                placeholder="Type name here"
-                value={formData.productName}
-                onChange={(e) => handleInputChange('productName', e.target.value)}
-                className="w-full"
+              <Controller
+                name="productName"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Type name here"
+                    className="w-full"
+                  />
+                )}
               />
             </div>
 
@@ -170,11 +201,16 @@ const ProductForm: React.FC = () => {
               <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Description
               </label>
-              <Textarea
-                placeholder="Type Description here"
-                value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-                className="w-full h-32 resize-none"
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    placeholder="Type Description here"
+                    className="w-full h-32 resize-none"
+                  />
+                )}
               />
             </div>
 
@@ -183,30 +219,27 @@ const ProductForm: React.FC = () => {
               <label className="block text-sm font-semibold text-gray-900 mb-2">
                 Category
               </label>
-              <select
-                value={formData.categoryId}
-                onChange={handleCategoryChange}
-                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="">Select Category</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>{cat.name}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Brand Name */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Brand Name
-              </label>
-              <Input
-                placeholder="Type brand name here"
-                value={formData.brandName}
-                onChange={(e) => handleInputChange('brandName', e.target.value)}
-                className="w-full"
+              <Controller
+                name="categoryId"
+                control={control}
+                render={({ field }) => (
+                  <select
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleCategoryChange(e);
+                    }}
+                    className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  >
+                    <option value="">Select Category</option>
+                    {categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                  </select>
+                )}
               />
             </div>
+
 
             {/* SKU and Stock Quantity */}
             <div className="grid grid-cols-2 gap-4">
@@ -214,20 +247,15 @@ const ProductForm: React.FC = () => {
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
                   SKU
                 </label>
-                <Input
-                  value={formData.sku}
-                  onChange={(e) => handleInputChange('sku', e.target.value)}
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">
-                  Stock Quantity
-                </label>
-                <Input
-                  value={formData.stockQuantity}
-                  onChange={(e) => handleInputChange('stockQuantity', e.target.value)}
-                  className="w-full"
+                <Controller
+                  name="sku"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      className="w-full"
+                    />
+                  )}
                 />
               </div>
             </div>
@@ -238,20 +266,30 @@ const ProductForm: React.FC = () => {
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Regular Price
                 </label>
-                <Input
-                  value={formData.regularPrice}
-                  onChange={(e) => handleInputChange('regularPrice', e.target.value)}
-                  className="w-full"
+                <Controller
+                  name="regularPrice"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      className="w-full"
+                    />
+                  )}
                 />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-900 mb-2">
                   Sale Price
                 </label>
-                <Input
-                  value={formData.salePrice}
-                  onChange={(e) => handleInputChange('salePrice', e.target.value)}
-                  className="w-full"
+                <Controller
+                  name="salePrice"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      className="w-full"
+                    />
+                  )}
                 />
               </div>
             </div>
@@ -383,34 +421,23 @@ const ProductForm: React.FC = () => {
         {/* Action Buttons - bottom left */}
         <div className="flex gap-3 pt-8 justify-start">
           <Button 
+            type="submit"
             className="bg-blue-600 hover:bg-blue-700 text-white"
-            onClick={handleSave}
-            disabled={saving}
           >
-            {saving ? 'Saving...' : 'SAVE'}
+            {mode === 'add' ? 'Add Product' : 'Save Changes'}
           </Button>
           <Button 
+            type="button"
             variant="outline" 
             className="border-slate-300 text-slate-700 hover:bg-slate-50"
+            onClick={onCancel}
           >
-            CANCEL
+            Cancel
           </Button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
 export default ProductForm;
-
-/* Add this to your global CSS (e.g., index.css or tailwind.css):
-@keyframes shake {
-  10%, 90% { transform: translateX(-1px); }
-  20%, 80% { transform: translateX(2px); }
-  30%, 50%, 70% { transform: translateX(-4px); }
-  40%, 60% { transform: translateX(4px); }
-}
-.animate-shake {
-  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-}
-*/
