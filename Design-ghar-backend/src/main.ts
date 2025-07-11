@@ -18,6 +18,15 @@ async function bootstrap() {
     }),
   );
 
+  app.use((req, res, next) => {
+    console.log('Incoming request:', {
+      method: req.method,
+      url: req.url,
+      body: req.body,
+    });
+    next();
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Design Ghar API')
     .setDescription('API documentation for Design Ghar')

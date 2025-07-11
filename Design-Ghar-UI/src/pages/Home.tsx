@@ -6,12 +6,14 @@ import BannerCarousel from '@/components/home/Banner';
 import ServiceCard from '@/components/home/ServiceCard';
 import ProductCard from '@/components/home/ProductCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useProduct } from '@/context/ProductContext';
 
 export default function Home() {
-  const { services, products, banners, isLoading } = useData();
+  const { services, banners, isLoading } = useData();
+  const {products} = useProduct();
   
   // Get featured products
-  const featuredProducts = products.filter(product => product.featured);
+  const featuredProducts = products.filter(product => product.isFeatured);
 
   return (
     <div className="min-h-screen flex flex-col ">

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Phone, Image } from 'lucide-react';
 import { Product } from '@/types';
-import { useData } from '@/context/DataContext';
 import TopBar from '@/components/layout/TopBar';
 import Footer from '@/components/layout/Footer';
 import Breadcrumb from '@/components/products/Breadcrumb';
@@ -10,21 +9,19 @@ import RelatedProducts from '@/components/products/RelatedProducts';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useProduct } from '@/context/ProductContext';
 
 export default function ProductDetail() {
   const {categoryId, id } = useParams<{categoryId:string, id: string }>();
-  const { products,services, isLoading } = useData();
+  const {products} = useProduct();
   const [product, setProduct] = useState<Product>();
   
   useEffect(() => {
-    if (!isLoading && id) {
       const foundProduct = products.find(p => p.id === id);
       if (foundProduct) {
-        foundProduct.category = services.find(service => service.id === categoryId)?.name || '';
         setProduct(foundProduct);
       }
-    }
-  }, [id, products, isLoading]);
+  }, [id, products]);
 
 
   return (
@@ -33,7 +30,7 @@ export default function ProductDetail() {
       <div className="h-[140px]" />
       {/* Spacer for fixed TopBar (adjust height as needed) */}
       <main className="flex-grow pt-8 pb-16 px-6 md:px-12 lg:px-24">
-        {isLoading || !product ? (
+        {!product ? (
           <div className="space-y-8">
             <Skeleton className="h-6 w-64" />
             
@@ -58,8 +55,8 @@ export default function ProductDetail() {
             <Breadcrumb 
               items={[
                 { label: 'Products', href: '/products' },
-                { label: product.category, href: `/products/${product.categoryId}` },
-                { label: product.title }
+                { label: product.categoryName || '', href: `/products/${product.categoryId}` },
+                { label: product.name }
               ]} 
             />
             
@@ -67,8 +64,8 @@ export default function ProductDetail() {
               {/* Product Image */}
               <div className="rounded-lg overflow-hidden bg-white shadow-md">
                 <img 
-                  src={product.image} 
-                  alt={product.title}
+                  src={product.mediaURLs?.[0] || '/placeholder.png'} // Fallback image
+                  alt={product.name}
                   className="w-full h-full object-cover aspect-square"
                 />
               </div>
@@ -76,25 +73,25 @@ export default function ProductDetail() {
               {/* Product Details */}
               <div className="space-y-6">
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
-                  <p className="text-indigo-600 mt-1">{product.category}</p>
+                  <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+                  <p className="text-indigo-600 mt-1">{product.categoryName}</p>
                 </div>
                 
                 <p className="text-gray-600">{product.description}</p>
                 
                 <div className="flex items-baseline">
-                  {product.discountedPrice && (
+                  {product.finalPrice && (
                     <span className="text-green-600 font-bold text-2xl">
-                      Rs. {product.discountedPrice}
+                      Rs. {product.finalPrice}
                     </span>
                   )}
-                  <span className={`${product.discountedPrice ? 'ml-2 text-gray-500 line-through text-lg' : 'text-green-600 font-bold text-2xl'}`}>
-                    Rs. {product.price}
+                  <span className={`${product.basePrice ? 'ml-2 text-gray-500 line-through text-lg' : 'text-green-600 font-bold text-2xl'}`}>
+                    Rs. {product.basePrice}
                   </span>
                   
-                  {product.discount && (
+                  {product.basePrice && product.finalPrice && (
                     <Badge className="ml-3 bg-red-500 hover:bg-red-600">
-                      {product.discount}% OFF
+                      {Math.ceil(((product.basePrice - product.finalPrice) / product.basePrice) * 100)}% OFF
                     </Badge>
                   )}
                 </div>
@@ -134,7 +131,7 @@ export default function ProductDetail() {
             <RelatedProducts 
               products={products} 
               currentProductId={product.id} 
-              productType={product.category}
+              productType={product.categoryName}
             />
           </>
         )}

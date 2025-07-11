@@ -7,7 +7,6 @@ import { ProductDto } from './product.dto';
  */
 export class CreateProductDto extends OmitType(ProductDto, [
   'id',
-  'finalPrice',
   'viewCount',
   'createdAt',
   'updatedAt',

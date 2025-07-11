@@ -104,10 +104,6 @@ export class ProductService {
     const entity = this.repo.create({
       ...dto,
       viewCount: 0,
-      finalPrice: this.computeFinalPrice(
-        dto.basePrice,
-        dto.discountPercentage,
-      ),
     });
 
     return this.repo.save(entity);
@@ -152,8 +148,12 @@ export class ProductService {
     return this.repo.save(entity);
   }
 
-  async softDelete(id: ObjectId): Promise<Product> {
-     return this.toggleActive(id, false);
+  async remove(id: ObjectId) {
+     //return this.toggleActive(id, false);
+
+     const result = await this.repo.delete({ id: new ObjectId(id) });
+    if (!result.affected) throw new NotFoundException('Product not found');
+    return { deleted: true };
   }
 
   async toggleActive(id: ObjectId, isActive: boolean): Promise<Product> {
