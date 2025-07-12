@@ -73,7 +73,7 @@ export default function ProductTable({ products, onEdit, onDelete, onProductUpda
                       Rs. {product.finalPrice}
                     </span>
                   )}
-                  <span className={product.finalPrice ? "text-gray-500 line-through text-sm" : ""}>
+                  <span className={product.basePrice ? "text-gray-500 line-through text-sm" : ""}>
                     Rs. {product.basePrice}
                   </span>
                 </div>

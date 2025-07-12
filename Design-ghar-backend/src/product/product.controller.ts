@@ -76,13 +76,13 @@ export class ProductController {
         @UploadedFiles() files: Array<Express.Multer.File>,
         @Body() dto: CreateProductDto
     ) {
+        console.log('Uploaded files:', files);
+        console.log('DTO:', dto);
+
         let mediaURLs: string[] = [];
         if (files && files.length) {
             dto.mediaURLs = await Promise.all(files.map(file => this.cloudinary.uploadImage(file)));
         } 
-        // else if (dto.mediaURLs) {
-        //     mediaURLs = [...dto.mediaURLs];
-        // }
         return this.service.create(dto);
     }
 
@@ -117,7 +117,7 @@ export class ProductController {
     @HttpCode(204)
     remove(@Param('id', ParseMongoIdPipe) id: ObjectId) {
         console.log('Removing product with ID:', id);
-        return this.service.softDelete(id);
+        return this.service.remove(id);
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)

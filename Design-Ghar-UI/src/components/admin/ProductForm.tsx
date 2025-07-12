@@ -132,6 +132,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, onSave, on
       formDataObj.append('categoryId', formValues.categoryId);
       formDataObj.append('basePrice', formValues.regularPrice);
       formDataObj.append('finalPrice', formValues.salePrice);
+      formDataObj.append('isActive', 'true'); 
+      formDataObj.append('isFeatured', 'false'); 
     } else if (mode === 'edit') {
       // Append only changed values for edit mode
       if (initialData.name !== formValues.productName) {
@@ -160,7 +162,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ mode, initialData, onSave, on
     tags.forEach((tag) => formDataObj.append('tags', tag));
     productImages.forEach((image) => {
       if (image.file) {
-        formDataObj.append('images', image.file);
+        formDataObj.append('files', image.file);
       }
     });
 

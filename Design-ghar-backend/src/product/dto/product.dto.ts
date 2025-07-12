@@ -8,7 +8,7 @@ import {
   IsDate,
   IsMongoId,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class ProductDto {
@@ -89,6 +89,7 @@ export class ProductDto {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
+  @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
   tags?: string[];
 
   @ApiPropertyOptional({ description: 'Created at', type: Date })

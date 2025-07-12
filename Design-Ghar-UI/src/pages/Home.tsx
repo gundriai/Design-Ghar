@@ -1,17 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useData } from '@/context/DataContext';
-import TopBar from '@/components/layout/TopBar';
-import Footer from '@/components/layout/Footer';
 import BannerCarousel from '@/components/home/Banner';
-import ServiceCard from '@/components/home/ServiceCard';
 import ProductCard from '@/components/home/ProductCard';
+import ServiceCard from '@/components/home/ServiceCard';
+import Footer from '@/components/layout/Footer';
+import TopBar from '@/components/layout/TopBar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { categoryData } from '@/context/CategoryContext';
+import { useData } from '@/context/DataContext';
+import { useProduct } from '@/context/ProductContext';
 
 export default function Home() {
-  const { services, products, banners, isLoading } = useData();
+  const {banners, isLoading } = useData();
+  const {categories} = categoryData();
+  const {products} = useProduct();
   
   // Get featured products
-  const featuredProducts = products.filter(product => product.featured);
+  const featuredProducts = products.filter(product => product.isFeatured);
 
   return (
     <div className="min-h-screen flex flex-col ">
@@ -48,8 +51,8 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {services.map((service) => (
-                <ServiceCard key={service.id} {...service} />
+              {categories.map((category) => (
+                <ServiceCard key={category.id} {...category} />
               ))}
             </div>
           )}

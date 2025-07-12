@@ -10,7 +10,7 @@ export default function Dashboard() {
   // Calculate stats
   const totalProducts = products.length;
   const totalServices = services.length;
-  const featuredProducts = products.filter(p => p.featured).length;
+  const featuredProducts = products.filter(p => p.isFeatured).length;
   
   // Mock data for the dashboard
   const stats = [

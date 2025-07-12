@@ -37,8 +37,8 @@ export default function ProductCategoryDetail() {
       <div className="py-12 px-4 md:px-12 lg:px-24">
         {/* Category Detail Section */}
         <div className="mb-10 flex flex-col md:flex-row gap-8 items-center md:items-start">
-          {category?.icon && (
-            <img src={category.icon} alt={category.name} className="w-40 h-40 object-contain rounded-xl" />
+          {category?.imageUrl && (
+            <img src={category.imageUrl} alt={category.name} className="w-40 h-40 object-contain rounded-xl" />
           )}
           <div>
             <h1 className="text-3xl font-bold text-indigo-700 mb-2">{category?.name}</h1>
