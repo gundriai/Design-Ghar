@@ -1,11 +1,11 @@
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Product } from '@/types';
+import { motion } from 'framer-motion';
+import { Image, Phone } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Image } from 'lucide-react';
-import { Product } from '@/types';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { motion } from 'framer-motion';
 
 interface ProductCardProps {
   product: Product;

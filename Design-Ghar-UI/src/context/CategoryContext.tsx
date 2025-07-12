@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { Category } from '@/types';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000/';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 interface CategoryContextType {
     categories: Category[];

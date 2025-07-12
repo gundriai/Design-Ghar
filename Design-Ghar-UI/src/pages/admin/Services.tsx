@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import Sidebar from '@/components/admin/Sidebar';
-import ServiceTable from '@/components/admin/ServiceTable';
 import ServiceForm from '@/components/admin/ServiceForm';
+import ServiceTable from '@/components/admin/ServiceTable';
+import Sidebar from '@/components/admin/Sidebar';
 import { categoryData } from '@/context/CategoryContext';
 import { Category } from '@/types';
+import { useState } from 'react';
 
 export default function Services() {
   const { categories, addCategory, updateCategory, deleteCategory } = categoryData();

@@ -1,19 +1,18 @@
-import { useState } from 'react';
-import { 
-  Table, 
-  TableHeader, 
-  TableRow, 
-  TableHead, 
-  TableBody, 
-  TableCell 
-} from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, Plus, ImageIcon } from 'lucide-react';
-import { Banner } from '@/types';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table';
 import { useData } from '@/context/DataContext';
 import { useToast } from '@/hooks/use-toast';
+import { Banner } from '@/types';
+import { Edit, ImageIcon, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import BannerForm from './BannerForm';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@/components/ui/breadcrumb';
 
 export default function BannerTable() {
   const { banners, addBanner, updateBanner, deleteBanner } = useData();

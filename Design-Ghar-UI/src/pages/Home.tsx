@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useData } from '@/context/DataContext';
-import TopBar from '@/components/layout/TopBar';
-import Footer from '@/components/layout/Footer';
 import BannerCarousel from '@/components/home/Banner';
-import ServiceCard from '@/components/home/ServiceCard';
 import ProductCard from '@/components/home/ProductCard';
+import ServiceCard from '@/components/home/ServiceCard';
+import Footer from '@/components/layout/Footer';
+import TopBar from '@/components/layout/TopBar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useProduct } from '@/context/ProductContext';
 import { categoryData } from '@/context/CategoryContext';
+import { useData } from '@/context/DataContext';
+import { useProduct } from '@/context/ProductContext';
 
 export default function Home() {
   const {banners, isLoading } = useData();

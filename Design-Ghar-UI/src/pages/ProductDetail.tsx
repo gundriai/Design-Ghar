@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Phone, Image } from 'lucide-react';
-import { Product } from '@/types';
-import TopBar from '@/components/layout/TopBar';
 import Footer from '@/components/layout/Footer';
+import TopBar from '@/components/layout/TopBar';
 import Breadcrumb from '@/components/products/Breadcrumb';
 import RelatedProducts from '@/components/products/RelatedProducts';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useProduct } from '@/context/ProductContext';
+import { Product } from '@/types';
+import { Image, Phone } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function ProductDetail() {
-  const {categoryId, id } = useParams<{categoryId:string, id: string }>();
+  const {id } = useParams<{categoryId:string, id: string }>();
   const {products} = useProduct();
   const [product, setProduct] = useState<Product>();
   

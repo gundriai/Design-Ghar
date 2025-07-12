@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: ./Design-ghar-backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=${MONGO_URI}
+      - ROOT_ADMIN_EMAIL=${ROOT_ADMIN_EMAIL}
+      - ROOT_ADMIN_PASSWORD=${ROOT_ADMIN_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    env_file:
+      - ./Design-ghar-backend/.env
+
+  frontend:
+    build:
+      context: ./Design-Ghar-UI
+      dockerfile: Dockerfile
+    ports:
+      - "5173:4173"
+    environment:
+      - NODE_ENV=production
+      - VITE_BASE_URL=${VITE_BASE_URL}
+    env_file:
+      - ./Design-Ghar-UI/.env
