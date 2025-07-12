@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { categoryData } from '@/context/CategoryContext';
 import { useData } from '@/context/DataContext';
 import { useProduct } from '@/context/ProductContext';
+import { Location } from './location';
 
 export default function Home() {
   const {banners, isLoading } = useData();
@@ -86,6 +87,13 @@ export default function Home() {
           )}
         </section>
         
+        <section className="px-6 md:px-12 lg:px-24 py-16">
+          <h2 className="text-3xl font-semibold text-center mb-12">Find Us</h2>
+          
+         <Location />
+        </section>
+
+
         {/* Testimonials Section */}
         <section className="px-6 md:px-12 lg:px-24 py-16">
           <h2 className="text-3xl font-semibold text-center mb-12">What Our Customers Say</h2>
