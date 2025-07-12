@@ -88,8 +88,6 @@ export default function Home() {
         </section>
         
         <section className="px-6 md:px-12 lg:px-24 py-16">
-          <h2 className="text-3xl font-semibold text-center mb-12">Find Us</h2>
-          
          <Location />
         </section>
 
