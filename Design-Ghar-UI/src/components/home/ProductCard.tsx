@@ -55,13 +55,15 @@ export default function ProductCard({ product }: ProductCardProps) {
         </CardContent>
         
         <CardFooter className="p-4 pt-0 flex flex-wrap gap-2">
-          <Button 
-            size="sm"
-            className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white"
-          >
-            <Phone className="h-4 w-4 mr-1" />
-            Call to Buy
-          </Button>
+          <a href="tel:9857879166" className="flex-1">
+            <Button 
+              size="sm"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+            >
+              <Phone className="h-4 w-4 mr-1" />
+              Call to Buy
+            </Button>
+          </a>
           
           <Link to={`/products/${product.categoryId}/${product.id}`} className="flex-1">
             <Button 
