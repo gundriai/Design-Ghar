@@ -8,6 +8,7 @@ import ScrollToTop from '@/components/layout/ScrollToTop';
 import Home from '@/pages/Home';
 import ProductDetail from '@/pages/ProductDetail';
 import Login from '@/pages/Login';
+import ServiceDetail from '@/pages/ServiceDetail';
 
 // Admin Pages
 import Dashboard from '@/pages/admin/Dashboard';
@@ -15,7 +16,6 @@ import Services from '@/pages/admin/Services';
 import Products from '@/pages/admin/Products';
 import Offers from '@/pages/admin/Offers';
 import Account from '@/pages/admin/Account';
-import ProductCategoryDetail from './components/products/category/ProductCategoryDetail';
 import { GradientBackground } from './components/layout/GradientBackground';
 import { CategoryProvider } from './context/CategoryContext';
 import { ProductProvider } from './context/ProductContext';
@@ -43,9 +43,8 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/products/:categoryId/:id" element={<ProductDetail />} />
-      <Route path="/products/:categoryId" element={<ProductCategoryDetail />} />
+      <Route path="/products/:categoryId" element={<ServiceDetail />} />
       <Route path="/login" element={<Login />} />
-
       {/* Admin routes */}
       <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/admin/services" element={<ProtectedRoute><Services /></ProtectedRoute>} />
