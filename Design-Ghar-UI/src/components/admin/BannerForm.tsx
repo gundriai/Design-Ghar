@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Image } from 'lucide-react';
@@ -8,43 +8,41 @@ interface BannerFormProps {
   mode: 'add' | 'edit';
   initialData?: Partial<{
     title: string;
-    image: string;
+    imageUrl: string;
     link: string;
     startDate: string;
     endDate: string;
     priority: number;
   }>;
-  onSave: (data: any) => void;
+  onSave: (data: FormData) => void | Promise<void>;
   onCancel: () => void;
 }
 
-interface BannerImage {
-  id: string;
-  name: string;
-  file?: File;
-  url?: string;
-}
-
 const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave, onCancel }) => {
-  const [formData, setFormData] = useState({
-    title: initialData.title || '',
-    image: initialData.image || '',
-    link: initialData.link || '',
-    startDate: initialData.startDate || new Date().toISOString().split('T')[0],
-    endDate: initialData.endDate || new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0],
-    priority: initialData.priority || 1,
-  });
-  const [bannerImages, setBannerImages] = useState<BannerImage[]>(
-    initialData.image ? [{ id: 'existing', name: 'Banner Image', url: initialData.image }] : []
-  );
+  const [title, setTitle] = useState(initialData.title || '');
+  const [link, setLink] = useState(initialData.link || '');
+  const [startDate, setStartDate] = useState(initialData.startDate || new Date().toISOString().split('T')[0]);
+  const [endDate, setEndDate] = useState(initialData.endDate || '');
+  const [priority, setPriority] = useState(initialData.priority || 1);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState(initialData.imageUrl || '');
+  const [loading, setLoading] = useState(false);
   const dropRef = useRef<HTMLDivElement>(null);
   const [dragActive, setDragActive] = useState(false);
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+  // Fix: Only reset state when switching to edit mode (not on every render)
+  useEffect(() => {
+    if (mode === 'edit' && initialData) {
+      setTitle(initialData.title || '');
+      setLink(initialData.link || '');
+      setStartDate(initialData.startDate || new Date().toISOString().split('T')[0]);
+      setEndDate(initialData.endDate || '');
+      setPriority(initialData.priority || 1);
+      setImagePreview(initialData.imageUrl || '');
+      setImageFile(null);
+    }
+  }, [initialData, mode]);
 
-  // Drag and drop/image upload handlers
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -67,35 +65,51 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
     handleFiles(files);
   };
   const handleFiles = (files: File[]) => {
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/svg+xml'];
-    const validFiles = files.filter(file => allowedTypes.includes(file.type));
-    if (validFiles.length === 0) return;
-    // Only allow one banner image
-    const newImage = validFiles[0];
-    const imageObj = {
-      id: `${Date.now()}`,
-      name: newImage.name,
-      file: newImage,
-      url: URL.createObjectURL(newImage),
-    };
-    setBannerImages([imageObj]);
-    setFormData(prev => ({ ...prev, image: imageObj.url }));
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/svg+xml', 'image/gif'];
+    const validFile = files.find(file => allowedTypes.includes(file.type));
+    if (!validFile) return;
+    setImageFile(validFile);
+    setImagePreview(URL.createObjectURL(validFile));
   };
   const handleRemoveImage = () => {
-    setBannerImages([]);
-    setFormData(prev => ({ ...prev, image: '' }));
+    setImageFile(null);
+    setImagePreview('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.image) return;
-    onSave({ ...formData, image: bannerImages[0]?.url || '' });
+    if (!title || !startDate || !priority || (!imageFile && !imagePreview)) return;
+    setLoading(true);
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('startDate', startDate);
+    if (endDate) formData.append('endDate', endDate);
+    formData.append('sequence', String(priority));
+    if (link) formData.append('redirectUrl', link);
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+    const result = onSave(formData);
+    if (result instanceof Promise) {
+      await result;
+    }
+    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-3xl mx-auto">
-        <form onSubmit={handleSubmit}>
+    <div className="min-h-screen bg-gray-50 p-6 relative">
+      {/* Blur and spinner overlay when loading */}
+      {loading && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-sm">
+          <svg className="animate-spin h-10 w-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          <span className="ml-4 text-blue-700 font-semibold text-lg">Saving...</span>
+        </div>
+      )}
+      <div className={loading ? 'pointer-events-none filter blur-sm select-none' : ''}>
+        <form onSubmit={handleSubmit} className={loading ? 'pointer-events-none blur-sm select-none' : ''}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left Column - Form Fields */}
             <div className="space-y-6">
@@ -103,8 +117,8 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
                 <label className="block text-sm font-semibold text-gray-900 mb-2">Banner Title *</label>
                 <Input
                   placeholder="e.g. Mother's Day Special - 50% OFF"
-                  value={formData.title}
-                  onChange={e => handleInputChange('title', e.target.value)}
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
                   required
                   className="w-full"
                 />
@@ -113,18 +127,19 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
                 <label className="block text-sm font-semibold text-gray-900 mb-2">Link URL</label>
                 <Input
                   placeholder="e.g. /offers/mothers-day"
-                  value={formData.link}
-                  onChange={e => handleInputChange('link', e.target.value)}
+                  value={link}
+                  onChange={e => setLink(e.target.value)}
                   className="w-full"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">Start Date</label>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">Start Date *</label>
                   <Input
                     type="date"
-                    value={formData.startDate}
-                    onChange={e => handleInputChange('startDate', e.target.value)}
+                    value={startDate}
+                    onChange={e => setStartDate(e.target.value)}
+                    required
                     className="w-full"
                   />
                 </div>
@@ -132,19 +147,20 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
                   <label className="block text-sm font-semibold text-gray-900 mb-2">End Date</label>
                   <Input
                     type="date"
-                    value={formData.endDate}
-                    onChange={e => handleInputChange('endDate', e.target.value)}
+                    value={endDate}
+                    onChange={e => setEndDate(e.target.value)}
                     className="w-full"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">Priority</label>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Priority *</label>
                 <Input
                   type="number"
                   min="1"
-                  value={formData.priority}
-                  onChange={e => handleInputChange('priority', e.target.value)}
+                  value={priority}
+                  onChange={e => setPriority(Number(e.target.value))}
+                  required
                   className="w-full"
                 />
                 <p className="text-xs text-gray-500 mt-1">Lower numbers will be shown first (1 is highest priority)</p>
@@ -174,15 +190,15 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
                 >
                   <Image className="mx-auto h-12 w-12 text-gray-400 mb-4" />
                   <p className="text-sm text-gray-600 mb-1">Drop your image here, or click to select</p>
-                  <p className="text-xs text-gray-500">SVG, PNG, JPEG allowed (1200×400 recommended)</p>
-                  {bannerImages.length > 0 && (
+                  <p className="text-xs text-gray-500">SVG, PNG, JPEG, GIF allowed (1200×400 recommended)</p>
+                  {imagePreview && (
                     <div className="mt-2 text-xs font-medium text-blue-700 bg-blue-100 inline-block px-3 py-1 rounded-full">
-                      {bannerImages.length} file selected
+                      1 file selected
                     </div>
                   )}
                   <input
                     type="file"
-                    accept="image/png, image/jpeg, image/svg+xml"
+                    accept="image/png, image/jpeg, image/svg+xml, image/gif"
                     onChange={handleImageUpload}
                     className="hidden"
                     id="banner-image-upload"
@@ -190,13 +206,13 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
                   />
                 </div>
                 {/* Preview */}
-                {bannerImages.length > 0 && (
+                {imagePreview && (
                   <div className="mb-2">
                     <Card className="w-full h-40 bg-gray-100 rounded-lg relative flex items-center justify-center">
                       <CardContent className="flex items-center justify-center h-full p-2">
                         <img
-                          src={bannerImages[0].url}
-                          alt={bannerImages[0].name}
+                          src={imagePreview}
+                          alt="Banner Preview"
                           className="object-contain max-h-36 max-w-full rounded-lg"
                         />
                       </CardContent>

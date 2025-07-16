@@ -8,9 +8,10 @@ import { categoryData } from '@/context/CategoryContext';
 import { useData } from '@/context/DataContext';
 import { useProduct } from '@/context/ProductContext';
 import { Location } from './location';
+import { bannerData, BannerProvider } from '@/context/BannerContext';
 
 export default function Home() {
-  const {banners, isLoading } = useData();
+  const {banners, isLoading } = bannerData();
   const {categories} = categoryData();
   const {products} = useProduct();
   
@@ -86,13 +87,8 @@ export default function Home() {
             </div>
           )}
         </section>
-        
-        <section className="px-6 md:px-12 lg:px-24 py-16">
-          <h2 className="text-3xl font-semibold text-center mb-12">Find Us</h2>
-          
+      
          <Location />
-        </section>
-
 
         {/* Testimonials Section */}
         <section className="px-6 md:px-12 lg:px-24 py-16">

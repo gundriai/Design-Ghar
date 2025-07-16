@@ -19,6 +19,7 @@ import ProductCategoryDetail from './components/products/category/ProductCategor
 import { GradientBackground } from './components/layout/GradientBackground';
 import { CategoryProvider } from './context/CategoryContext';
 import { ProductProvider } from './context/ProductContext';
+import { BannerProvider } from './context/BannerContext';
 
 
 
@@ -69,12 +70,14 @@ function App() {
         <AuthProvider>
           <CategoryProvider>
             <ProductProvider>
-              <DataProvider>
-                <div className="relative z-10">
-                  <AppRoutes />
-                  <Toaster />
-                </div>
-              </DataProvider>
+              <BannerProvider>
+                <DataProvider>
+                  <div className="relative z-10">
+                    <AppRoutes />
+                    <Toaster />
+                  </div>
+                </DataProvider>
+              </BannerProvider>
             </ProductProvider>
           </CategoryProvider>
         </AuthProvider>
