@@ -6,7 +6,7 @@ export const Location: React.FC = () => {
     <section id="location" className="py-16 md:py-24 px-4">
       <div className="container mx-auto">
         <div className="text-center mb-12">
-          <h2 className="font-playfair text-3xl md:text-4xl font-bold text-slate-800 mb-4">Visit Us</h2>
+          <h2 className="font-playfair text-3xl md:text-4xl font-bold text-slate-800 mb-4">Find Us</h2>
           <div className="w-20 h-1 bg-rose-500 mx-auto mb-4"></div>
           <p className="max-w-2xl mx-auto text-slate-600 mb-8">
             Come experience our Design Services at our conveniently located House.

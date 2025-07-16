@@ -87,7 +87,8 @@ export default function Home() {
             </div>
           )}
         </section>
-      
+
+        <section className="px-6 md:px-12 lg:px-24 py-16">
          <Location />
 
         {/* Testimonials Section */}
