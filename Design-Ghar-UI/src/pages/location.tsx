@@ -40,7 +40,7 @@ export const Location: React.FC = () => {
                 <p className="text-slate-800 font-medium mb-1">Address</p>
                 <p className="text-slate-600">
                   Dang CTP Center<br />
-                  Ghorahi 22400, <br />
+                  Ghorahi 15, Dang <br />
                   Nepal
                 </p>
                 <a 
@@ -61,7 +61,7 @@ export const Location: React.FC = () => {
               <div>
                 <p className="text-slate-800 font-medium mb-1">Business Hours</p>
                 <p className="text-slate-600">
-                  Sunday to Friday: 09:00 AM - 05:00 PM<br />
+                  Sunday to Friday: 10:00 AM - 07:00 PM<br />
                   Saturday : Closed
                 </p>
               </div>

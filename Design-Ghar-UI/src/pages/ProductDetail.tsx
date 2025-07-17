@@ -96,14 +96,16 @@ export default function ProductDetail() {
                   )}
                 </div>
                 
-                <div className="pt-6 space-y-4">
-                  <Button 
-                    size="lg"
-                    className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white"
-                  >
-                    <Phone className="mr-2 h-5 w-5" />
-                    Call to Buy
-                  </Button>
+                <div className="pt-6 space-y-2 ">
+                  <a href="tel:9857879166" className="w-full md:w-auto">
+                    <Button 
+                      size="lg"
+                      className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white space-x-2 mr-1"
+                    >
+                      <Phone className="mr-2 h-5 w-5" />
+                      Call to Buy
+                    </Button>
+                  </a>
                   
                   <Button 
                     variant="outline" 
