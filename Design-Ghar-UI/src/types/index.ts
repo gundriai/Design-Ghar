@@ -39,7 +39,7 @@ export interface Banner {
   id: string;
   title: string;
   imageUrl: string; // backend field
-  link?: string; // maps to redirectUrl
+  redirectUrl?: string; // maps to redirectUrl
   startDate: string;
   endDate?: string;
   sequence: number; // backend field
