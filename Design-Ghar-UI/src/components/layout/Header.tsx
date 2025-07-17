@@ -41,7 +41,7 @@ export default function Header() {
 				<div className="flex items-center justify-between">
 					{/* Logo */}
 					<Link to="/" className="flex items-center">
-						<img src="/logo.png" alt="DesignGhar" className="h-12" />
+						<img src="/logo.png" alt="DesignGhar" className="h-16" />
 					</Link>
 
 					{/* Desktop Navigation */}
@@ -127,12 +127,12 @@ export default function Header() {
 					</div>
 				)}
 			</header>
-			<div className={isScrolled ? 'h-16' : 'h-20'} />
+			<div className='h-20'/>
 			{(isOpen || isScrolled) && (
 				<div
 					className="fixed left-0 top-0 w-full"
 					style={{
-						height: isScrolled ? '4rem' : '5rem',
+						height: '5rem',
 						zIndex: 40,
 						backdropFilter: 'blur(8px)',
 						WebkitBackdropFilter: 'blur(8px)',
