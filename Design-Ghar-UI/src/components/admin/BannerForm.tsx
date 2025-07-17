@@ -9,7 +9,7 @@ interface BannerFormProps {
   initialData?: Partial<{
     title: string;
     imageUrl: string;
-    link: string;
+    redirectUrl: string;
     startDate: string;
     endDate: string;
     priority: number;
@@ -20,7 +20,7 @@ interface BannerFormProps {
 
 const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave, onCancel }) => {
   const [title, setTitle] = useState(initialData.title || '');
-  const [link, setLink] = useState(initialData.link || '');
+  const [redirectUrl, setRedirectUrl] = useState(initialData.redirectUrl || '');
   const [startDate, setStartDate] = useState(initialData.startDate || new Date().toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState(initialData.endDate || '');
   const [priority, setPriority] = useState(initialData.priority || 1);
@@ -34,7 +34,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
   useEffect(() => {
     if (mode === 'edit' && initialData) {
       setTitle(initialData.title || '');
-      setLink(initialData.link || '');
+      setRedirectUrl(initialData.redirectUrl || '');
       setStartDate(initialData.startDate || new Date().toISOString().split('T')[0]);
       setEndDate(initialData.endDate || '');
       setPriority(initialData.priority || 1);
@@ -85,7 +85,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
     formData.append('startDate', startDate);
     if (endDate) formData.append('endDate', endDate);
     formData.append('sequence', String(priority));
-    if (link) formData.append('redirectUrl', link);
+    if (redirectUrl) formData.append('redirectUrl', redirectUrl);
     if (imageFile) {
       formData.append('image', imageFile);
     }
@@ -124,11 +124,11 @@ const BannerForm: React.FC<BannerFormProps> = ({ mode, initialData = {}, onSave,
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-900 mb-2">Link URL</label>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Redirect URL</label>
                 <Input
                   placeholder="e.g. /offers/mothers-day"
-                  value={link}
-                  onChange={e => setLink(e.target.value)}
+                  value={redirectUrl}
+                  onChange={e => setRedirectUrl(e.target.value)}
                   className="w-full"
                 />
               </div>
