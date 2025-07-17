@@ -10,8 +10,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["'Delius'", 'cursive', 'sans-serif'],
+        sans: ['iBrand', 'sans-serif'],
       },
+      letterSpacing: {
+        'ibrand': '0.12em',
+      },
+
+
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
