@@ -39,7 +39,7 @@ export class Banner {
     @Column({ nullable: true })
     redirectUrl: string;
 
-    @Column({ nullable: false })
+    @Column({ nullable: true })
     category: string; // Reference to Category (ObjectId as string)
 
     @CreateDateColumn({ name: 'created_at' })

@@ -12,6 +12,7 @@ import { Category } from './category/category.entity';
 import { Banner } from './banner/banner.entity';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
+import { BannerModule } from './banner/banner.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { CategoryModule } from './category/category.module';
     AuthModule,
     UserModule,
     ProductModule,
-    CategoryModule
+    CategoryModule,
+    BannerModule
   ],
   controllers: [AppController],
   providers: [AppService,SeederService],

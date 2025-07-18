@@ -38,11 +38,12 @@ export interface Product {
 export interface Banner {
   id: string;
   title: string;
-  image: string;
-  link: string;
+  imageUrl: string; // backend field
+  redirectUrl?: string; // maps to redirectUrl
   startDate: string;
-  endDate: string;
-  priority: number;
+  endDate?: string;
+  sequence: number; // backend field
+  // Optionally add altText, category, etc. if needed
 }
 
 export interface Offer {

@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
-import { useData } from '@/context/DataContext';
+import { bannerData } from '@/context/BannerContext';
 import { useToast } from '@/hooks/use-toast';
 import { Banner } from '@/types';
 import { Edit, ImageIcon, Plus, Trash2 } from 'lucide-react';
@@ -15,15 +15,15 @@ import { useState } from 'react';
 import BannerForm from './BannerForm';
 
 export default function BannerTable() {
-  const { banners, addBanner, updateBanner, deleteBanner } = useData();
+  const { banners, addBanner, updateBanner, deleteBanner } = bannerData();
   const { toast } = useToast();
   
   const [view, setView] = useState<'table' | 'add' | 'edit' | 'delete'>('table');
   const [selectedBanner, setSelectedBanner] = useState<Banner | null>(null);
 
   // Add Banner
-  const handleAddBanner = (data: any) => {
-    if (!data.title || !data.image) {
+  const handleAddBanner = (formData: FormData) => {
+    if (!formData.get('title') || !formData.get('startDate') || !formData.get('sequence') || !formData.get('image')) {
       toast({
         title: 'Error',
         description: 'Please fill in all required fields',
@@ -31,15 +31,15 @@ export default function BannerTable() {
       });
       return;
     }
-    addBanner({ ...data, link: data.link || '#' });
+    addBanner(formData);
     toast({ title: 'Success', description: 'Banner added successfully' });
     setView('table');
   };
 
   // Edit Banner
-  const handleEditBanner = (data: any) => {
+  const handleEditBanner = (formData: FormData) => {
     if (!selectedBanner) return;
-    if (!data.title || !data.image) {
+    if (!formData.get('title') || !formData.get('startDate') || !formData.get('sequence')) {
       toast({
         title: 'Error',
         description: 'Please fill in all required fields',
@@ -47,7 +47,7 @@ export default function BannerTable() {
       });
       return;
     }
-    updateBanner({ id: selectedBanner.id, ...data });
+    updateBanner(selectedBanner.id as string, formData);
     toast({ title: 'Success', description: 'Banner updated successfully' });
     setView('table');
   };
@@ -55,7 +55,7 @@ export default function BannerTable() {
   // Delete Banner
   const handleDeleteBanner = () => {
     if (!selectedBanner) return;
-    deleteBanner(selectedBanner.id);
+    deleteBanner(selectedBanner.id as string);
     toast({ title: 'Success', description: 'Banner deleted successfully' });
     setView('table');
   };
@@ -177,9 +177,9 @@ export default function BannerTable() {
               <TableRow key={banner.id}>
                 <TableCell>
                   <div className="w-20 h-12 rounded overflow-hidden bg-gray-100">
-                    {banner.image ? (
+                    {banner.imageUrl ? (
                       <img 
-                        src={banner.image} 
+                        src={banner.imageUrl} 
                         alt={banner.title} 
                         className="w-full h-full object-cover"
                       />
@@ -195,10 +195,10 @@ export default function BannerTable() {
                   <div className="text-sm">
                     <div>{formatDate(banner.startDate)}</div>
                     <div className="text-gray-500">to</div>
-                    <div>{formatDate(banner.endDate)}</div>
+                    <div>{formatDate(banner.endDate || '')}</div>
                   </div>
                 </TableCell>
-                <TableCell>{banner.priority}</TableCell>
+                <TableCell>{banner.sequence}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
                     <Button
@@ -234,6 +234,7 @@ export default function BannerTable() {
 }
 
 function formatDate(dateString: string) {
+  if (!dateString) return '';
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
     year: 'numeric',

@@ -8,9 +8,11 @@ import { categoryData } from '@/context/CategoryContext';
 import { useData } from '@/context/DataContext';
 import { useProduct } from '@/context/ProductContext';
 import { Location } from './location';
+import { bannerData, BannerProvider } from '@/context/BannerContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
-  const {banners, isLoading } = useData();
+  const {banners, isLoading } = bannerData();
   const {categories} = categoryData();
   const {products} = useProduct();
   
@@ -85,11 +87,9 @@ export default function Home() {
             </div>
           )}
         </section>
-        
-        <section className="px-6 md:px-12 lg:px-24 py-16">
+      
+      
          <Location />
-        </section>
-
 
         {/* Testimonials Section */}
         <section className="px-6 md:px-12 lg:px-24 py-16">
