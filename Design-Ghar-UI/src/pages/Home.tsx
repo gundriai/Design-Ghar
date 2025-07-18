@@ -8,21 +8,14 @@ import { categoryData } from '@/context/CategoryContext';
 import { useData } from '@/context/DataContext';
 import { useProduct } from '@/context/ProductContext';
 import { Location } from './location';
-import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const {banners, isLoading } = useData();
   const {categories} = categoryData();
   const {products} = useProduct();
-  const navigate = useNavigate();
   
   // Get featured products
   const featuredProducts = products.filter(product => product.isFeatured);
-
-  function handleServiceClick(serviceId: string) {
-    navigate(`/services/${serviceId}`);
-  }
-
   return (
     <div className="min-h-screen flex flex-col ">
       <TopBar />
