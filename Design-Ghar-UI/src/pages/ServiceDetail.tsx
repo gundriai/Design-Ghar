@@ -5,7 +5,7 @@ import RelatedProducts from '@/components/products/RelatedProducts';
 import { Skeleton } from '@/components/ui/skeleton';
 import { categoryData } from '@/context/CategoryContext';
 import { useProduct } from '@/context/ProductContext';
-import { Category, Product } from '@/types';
+import { Category } from '@/types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 

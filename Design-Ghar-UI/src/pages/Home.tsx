@@ -15,15 +15,9 @@ export default function Home() {
   const {banners, isLoading } = bannerData();
   const {categories} = categoryData();
   const {products} = useProduct();
-  const navigate = useNavigate();
   
   // Get featured products
   const featuredProducts = products.filter(product => product.isFeatured);
-
-  function handleServiceClick(serviceId: string) {
-    navigate(`/services/${serviceId}`);
-  }
-
   return (
     <div className="min-h-screen flex flex-col ">
       <TopBar />
