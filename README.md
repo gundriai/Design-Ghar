@@ -21,15 +21,15 @@ To deploy the backend:
 
 1. Build your Docker image:
     ```bash
-    docker build -t your-app-name:latest .
+    docker build --platform linux/amd64 -t sudhirvoid/designghar-backend:v1 ./Design-ghar-backend
     ```
 2. Tag the image for Docker Hub:
     ```bash
-    docker tag your-app-name:latest your-dockerhub-username/your-app-name:latest
+docker tag sudhirvoid/designghar-backend:v1 sudhirvoid/designghar-backend:latest
     ```
 3. Push the image to Docker Hub:
     ```bash
-    docker push your-dockerhub-username/your-app-name:latest
+docker push sudhirvoid/designghar-backend:latest
     ```
 4. In Render, create a new web service and select "Deploy from Docker" using the Docker Hub image tag you just pushed.
 5. Render will pull the image and deploy your backend application.

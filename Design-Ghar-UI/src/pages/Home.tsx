@@ -4,13 +4,11 @@ import ServiceCard from '@/components/home/ServiceCard';
 import Footer from '@/components/layout/Footer';
 import TopBar from '@/components/layout/TopBar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { bannerData } from '@/context/BannerContext';
 import { categoryData } from '@/context/CategoryContext';
-import { useData } from '@/context/DataContext';
 import { useProduct } from '@/context/ProductContext';
 import { Location } from './location';
-import { bannerData, BannerProvider } from '@/context/BannerContext';
-import { useNavigate } from 'react-router-dom';
-
+import Testomonial from '@/components/home/Testimonial';
 export default function Home() {
   const {banners, isLoading } = bannerData();
   const {categories} = categoryData();
@@ -21,7 +19,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col ">
       <TopBar />
-      <div className="h-[140px]" />
+      <div className="h-[80px]" />
       {/* Spacer for fixed TopBar (adjust height as needed) */}
       <main className="flex-grow pt-8">
         {/* Banner + Elephant Row */}
@@ -38,8 +36,8 @@ export default function Home() {
         
         {/* Services Section */}
         <section className="px-6 md:px-12 lg:px-24 py-16">
-          <h2 className="text-3xl font-semibold text-center mb-12">Our Services</h2>
-          
+          <h2 className="text-3xl font-semibold text-center mb-4">Our Services</h2>
+          <div className="w-20 h-1 bg-rose-500 mx-auto mb-4"></div>
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {[...Array(4)].map((_, i) => (
@@ -62,8 +60,8 @@ export default function Home() {
         
         {/* Featured Products Section */}
         <section className="px-6 md:px-12 lg:px-24 py-16">
-          <h2 className="text-3xl font-semibold text-center mb-12">Popular Products</h2>
-          
+          <h2 className="text-3xl font-semibold text-center mb-4">Popular Products</h2>
+          <div className="w-20 h-1 bg-rose-500 mx-auto mb-4"></div>
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
               {[...Array(8)].map((_, i) => (
@@ -92,62 +90,7 @@ export default function Home() {
          <Location />
 
         {/* Testimonials Section */}
-        <section className="px-6 md:px-12 lg:px-24 py-16">
-          <h2 className="text-3xl font-semibold text-center mb-12">What Our Customers Say</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Testimonial 1 */}
-            <div className="p-6 rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-indigo-600 font-bold text-xl">
-                  A
-                </div>
-                <div className="ml-4">
-                  <h4 className="font-semibold">Aarav Sharma</h4>
-                  <p className="text-gray-500 text-sm">Business Owner</p>
-                </div>
-              </div>
-              <p className="text-gray-600">
-                "The team at DesignGhar created amazing corporate t-shirts for our entire staff. 
-                The quality is exceptional and the designs were exactly what we wanted."
-              </p>
-            </div>
-            
-            {/* Testimonial 2 */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
-                  P
-                </div>
-                <div className="ml-4">
-                  <h4 className="font-semibold">Priya Patel</h4>
-                  <p className="text-gray-500 text-sm">Event Organizer</p>
-                </div>
-              </div>
-              <p className="text-gray-600">
-                "We needed ID cards for a major conference with a tight deadline. 
-                DesignGhar delivered on time with excellent quality. Very professional service!"
-              </p>
-            </div>
-            
-            {/* Testimonial 3 */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
-                  R
-                </div>
-                <div className="ml-4">
-                  <h4 className="font-semibold">Rahul Kapoor</h4>
-                  <p className="text-gray-500 text-sm">Photographer</p>
-                </div>
-              </div>
-              <p className="text-gray-600">
-                "I had my photographs printed on canvas and the results were stunning. 
-                The colors are vibrant and the print quality is superb. Highly recommended!"
-              </p>
-            </div>
-          </div>
-        </section>
+        <Testomonial />
       </main>
       
       <Footer />
