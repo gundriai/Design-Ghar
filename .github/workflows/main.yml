@@ -1,0 +1,76 @@
+name: Build and Deploy UI to Netlify
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Design-Ghar-UI/**' 
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'Design-Ghar-UI/package-lock.json'
+
+      # Change to Design-Ghar-UI directory and install dependencies
+      - name: Install dependencies
+        run: |
+          cd Design-Ghar-UI
+          npm ci
+
+      # Build the project with environment variables
+      - name: Build project
+        run: |
+          cd Design-Ghar-UI
+          npm run build
+        env:
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+
+      # Copy netlify.toml to dist folder after successful build
+      - name: Copy netlify.toml to dist
+        run: |
+          if [ -f "Design-Ghar-UI/netlify.toml" ]; then
+            cp Design-Ghar-UI/netlify.toml Design-Ghar-UI/dist/
+            echo "✅ netlify.toml copied to dist folder"
+          else
+            echo "⚠️ netlify.toml not found in Design-Ghar-UI folder"
+          fi
+
+      # Deploy to Netlify
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: './Design-Ghar-UI/dist'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions - ${{ github.event.head_commit.message }}"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      # Optional: Add build status notification
+      - name: Build Success Notification
+        if: success()
+        run: |
+          echo "✅ Build and deployment completed successfully!"
+          echo "🚀 Site deployed to Netlify"
+
+      - name: Build Failure Notification
+        if: failure()
+        run: |
+          echo "❌ Build or deployment failed"
+          echo "Please check the logs for more details"
