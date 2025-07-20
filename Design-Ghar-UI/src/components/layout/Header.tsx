@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
@@ -20,20 +20,20 @@ export default function Header() {
 	const { user, logout } = useAuth();
 
 	// Handle scroll event to change header style
-	useState(() => {
+	useEffect(() => {
 		const handleScroll = () => {
 			setIsScrolled(window.scrollY > 20);
 		};
 
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
-	});
+	}, []);
 
 	return (
 		<>
 			<header
 				className={cn(
-					'fixed overflow-hidden top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12 lg:px-24',
+					'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12 lg:px-24',
 					isScrolled ? 'py-2' : 'py-4'
 				)}
 				style={{ boxShadow: 'none', border: 'none', borderColor: 'transparent' }}
@@ -65,11 +65,11 @@ export default function Header() {
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={() => setIsOpen(!isOpen)}
-							// className={cn(
-							// 	'text-gray-800',
-							// 	isScrolled ? 'hover:bg-gray-100' : 'hover:bg-white/20'
-							// )}
+							onClick={() => {
+								console.log('Menu toggled:', !isOpen);
+								setIsOpen(!isOpen);
+							}}
+							className="relative z-60"
 						>
 							{isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
 						</Button>
@@ -78,26 +78,26 @@ export default function Header() {
 
 				{/* Mobile Navigation */}
 				{isOpen && (
-					<div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 px-6 space-y-4">
+					<div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-2 px-4 space-y-1 z-60">
 						{navItems.map((item) => (
 							<Link
 								key={item.path}
 								to={item.path}
-								className="block py-2 text-gray-800 hover:text-sky-600"
+								className="block py-1.5 px-2 text-sm text-gray-800 hover:text-sky-600 hover:bg-gray-50 rounded-md"
 								onClick={() => setIsOpen(false)}
 							>
 								{item.label}
 							</Link>
 						))}
-						<div className="pt-2 border-t border-gray-100">
+						<div className="pt-1 mt-1 border-t border-gray-100">
 							{user ? (
-								<div className="flex flex-col space-y-2">
+								<div className="flex flex-col space-y-1.5">
 									<Link
 										to="/admin"
-										className="py-2"
+										className="block"
 										onClick={() => setIsOpen(false)}
 									>
-										<Button variant="outline" className="w-full">
+										<Button variant="outline" className="w-full h-8 text-sm">
 											Admin Dashboard
 										</Button>
 									</Link>
@@ -107,7 +107,7 @@ export default function Header() {
 											setIsOpen(false);
 										}}
 										variant="ghost"
-										className="w-full"
+										className="w-full h-8 text-sm"
 									>
 										Logout
 									</Button>
@@ -115,10 +115,10 @@ export default function Header() {
 							) : (
 								<Link
 									to="/login"
-									className="py-2 block"
+									className="block"
 									onClick={() => setIsOpen(false)}
 								>
-									<Button className="w-full bg-sky-500 hover:bg-sky-600 text-white">
+									<Button className="w-full h-8 text-sm bg-sky-500 hover:bg-sky-600 text-white">
 										Login
 									</Button>
 								</Link>
